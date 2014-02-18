@@ -4,7 +4,12 @@ from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.db import models, transaction
 from django.forms.models import modelform_factory
 from django.http import Http404, HttpResponse
-from django.utils.encoding import force_unicode, smart_unicode
+import sys
+if sys.version_info.major < 3:
+   from django.utils.encoding import force_unicode, smart_unicode
+else:
+   from django.utils.encoding import force_text, smart_text
+
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
@@ -72,7 +77,7 @@ class EditPatchView(ModelFormAdminView, ListAdminView):
 
         if self.org_obj is None:
             raise Http404(_('%(name)s object with primary key %(key)r does not exist.') %
-                          {'name': force_unicode(self.opts.verbose_name), 'key': escape(object_id)})
+                          {'name': force_text(self.opts.verbose_name), 'key': escape(object_id)})
 
     def get_new_field_html(self, f):
         result = self.result_item(self.org_obj, f, {'is_display_first':
@@ -93,7 +98,7 @@ class EditPatchView(ModelFormAdminView, ListAdminView):
                     allow_tags = True
                     text = boolean_icon(value)
                 else:
-                    text = smart_unicode(value)
+                    text = smart_text(value)
             else:
                 if isinstance(f.rel, models.ManyToOneRel):
                     field_val = getattr(self.org_obj, f.name)

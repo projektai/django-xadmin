@@ -1,7 +1,13 @@
 # coding=UTF-8
 from django.core.urlresolvers import reverse
-from django.utils.encoding import force_unicode
-from django.utils.encoding import smart_str
+import sys
+if sys.version_info.major < 3:
+   from django.utils.encoding import force_unicode
+   from django.utils.encoding import smart_str
+else:
+   from django.utils.encoding import force_text
+   from django.utils.encoding import smart_bytes, smart_text
+
 from django.utils.safestring import mark_safe
 from django.db.models.sql.query import LOOKUP_SEP
 from django.db.models.related import RelatedObject
@@ -47,7 +53,7 @@ class RelateMenuPlugin(BaseAdminPlugin):
             f = r.field
             rel_name = f.rel.get_related_field().name
 
-            verbose_name = force_unicode(r.opts.verbose_name)
+            verbose_name = force_text(r.opts.verbose_name)
             lookup_name = '%s__%s__exact' % (f.name, rel_name)
 
             link = ''.join(('<li class="with_menu_btn">',
@@ -119,9 +125,9 @@ class RelateObject(object):
         if len(self.to_objs) == 1:
             to_model_name = str(self.to_objs[0])
         else:
-            to_model_name = force_unicode(self.to_model._meta.verbose_name)
+            to_model_name = force_text(self.to_model._meta.verbose_name)
 
-        return mark_safe(u"<span class='rel-brand'>%s <i class='icon-caret-right'></i></span> %s" % (to_model_name, force_unicode(self.opts.verbose_name_plural)))
+        return mark_safe(u"<span class='rel-brand'>%s <i class='icon-caret-right'></i></span> %s" % (to_model_name, force_text(self.opts.verbose_name_plural)))
 
 
 class BaseRelateDisplayPlugin(BaseAdminPlugin):
@@ -129,7 +135,7 @@ class BaseRelateDisplayPlugin(BaseAdminPlugin):
     def init_request(self, *args, **kwargs):
         self.relate_obj = None
         for k, v in self.request.REQUEST.items():
-            if smart_str(k).startswith(RELATE_PREFIX):
+            if smart_text(k).startswith(RELATE_PREFIX):
                 self.relate_obj = RelateObject(
                     self.admin_view, smart_str(k)[len(RELATE_PREFIX):], v)
                 break
@@ -180,7 +186,7 @@ class EditRelateDisplayPlugin(BaseRelateDisplayPlugin):
         return datas
 
     def post_response(self, response):
-        if isinstance(response, basestring) and response != self.get_admin_url('index'):
+        if isinstance(response, str) and response != self.get_admin_url('index'):
             return self._get_url(response)
         return response
 
@@ -196,7 +202,7 @@ class EditRelateDisplayPlugin(BaseRelateDisplayPlugin):
 class DeleteRelateDisplayPlugin(BaseRelateDisplayPlugin):
 
     def post_response(self, response):
-        if isinstance(response, basestring) and response != self.get_admin_url('index'):
+        if isinstance(response, str) and response != self.get_admin_url('index'):
             return self._get_url(response)
         return response
 

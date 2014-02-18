@@ -1,7 +1,12 @@
 from django import forms
 from django.utils.datastructures import SortedDict
 from django.utils.html import escape
-from django.utils.encoding import force_unicode
+import sys
+if sys.version_info.major < 3:
+   from django.utils.encoding import force_unicode
+else:
+   from django.utils.encoding import force_text
+
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ListAdminView, ModelFormAdminView, DetailAdminView
 
@@ -20,7 +25,7 @@ class AjaxListPlugin(BaseAjaxPlugin):
     def get_result_list(self, response):
         av = self.admin_view
         base_fields = av.base_list_display
-        headers = dict([(c.field_name, force_unicode(c.text)) for c in av.result_headers(
+        headers = dict([(c.field_name, force_text(c.text)) for c in av.result_headers(
         ).cells if c.field_name in base_fields])
 
         objects = [dict([(o.field_name, escape(str(o.value))) for i, o in

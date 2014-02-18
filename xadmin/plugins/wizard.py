@@ -42,7 +42,7 @@ class WizardFormPlugin(BaseAdminPlugin):
                 self.wizard_form_list) > 0, 'at least one form is needed'
 
             for i, form in enumerate(self.wizard_form_list):
-                init_form_list[unicode(form[0])] = form[1]
+                init_form_list[str(form[0])] = form[1]
 
             self._form_list = init_form_list
 

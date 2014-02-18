@@ -1,6 +1,10 @@
 from django.db import models
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.encoding import smart_unicode
+import sys
+if sys.version_info.major < 3:
+   from django.utils.encoding import smart_unicode
+else:
+   from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.template.loader import get_template
@@ -15,7 +19,7 @@ import datetime
 FILTER_PREFIX = '_p_'
 SEARCH_VAR = '_q_'
 
-from util import (get_model_from_relation,
+from xadmin.util import (get_model_from_relation,
     reverse_field_path, get_limit_choices_to_from_path, prepare_lookup_value)
 
 
@@ -153,6 +157,10 @@ class BooleanFieldListFilter(ListFieldFilter):
         return isinstance(field, (models.BooleanField, models.NullBooleanField))
 
     def choices(self):
+        self.lookup_exact_val=''
+        self.lookup_isnull_val=''
+        self.lookup_exact_name=''
+        self.lookup_isnull_name=''
         for lookup, title in (
                 ('', _('All')),
                 ('1', _('Yes')),
@@ -183,6 +191,7 @@ class ChoicesFieldListFilter(ListFieldFilter):
         return bool(field.choices)
 
     def choices(self):
+        self.lookup_exact_val=''
         yield {
             'selected': self.lookup_exact_val is '',
             'query_string': self.query_string({}, [self.lookup_exact_name]),
@@ -190,7 +199,7 @@ class ChoicesFieldListFilter(ListFieldFilter):
         }
         for lookup, title in self.field.flatchoices:
             yield {
-                'selected': smart_unicode(lookup) == self.lookup_exact_val,
+                'selected': smart_text(lookup) == self.lookup_exact_val,
                 'query_string': self.query_string({self.lookup_exact_name: lookup}),
                 'display': title,
             }
@@ -260,7 +269,9 @@ class DateFieldListFilter(ListFieldFilter):
         else:       # field is a models.DateField
             today = now.date()
         tomorrow = today + datetime.timedelta(days=1)
-
+        self.lookup_isnull_name=''
+        self.lookup_since_name=''
+        self.lookup_until_name=''
         self.links = (
             (_('Any date'), {}),
             (_('Has date'), {
@@ -289,6 +300,9 @@ class DateFieldListFilter(ListFieldFilter):
 
     def get_context(self):
         context = super(DateFieldListFilter, self).get_context()
+        self.lookup_year_val=''
+        self.lookup_month_val=''
+        self.lookup_day_val=''
         context['choice_selected'] = bool(self.lookup_year_val) or bool(self.lookup_month_val) \
             or bool(self.lookup_day_val)
         return context
@@ -333,6 +347,7 @@ class RelatedFieldSearchFilter(FieldFilter):
         self.title = self.lookup_title
         self.search_url = model_admin.get_admin_url('%s_%s_changelist' % (
             other_model._meta.app_label, other_model._meta.module_name))
+        self.lookup_exact_val=''
         self.label = self.label_for_value(other_model, rel_name, self.lookup_exact_val) if self.lookup_exact_val else ""
         self.choices = '?'
         if field.rel.limit_choices_to:
@@ -402,7 +417,7 @@ class RelatedFieldListFilter(ListFieldFilter):
         }
         for pk_val, val in self.lookup_choices:
             yield {
-                'selected': self.lookup_exact_val == smart_unicode(pk_val),
+                'selected': self.lookup_exact_val == smart_text(pk_val),
                 'query_string': self.query_string({
                     self.lookup_exact_name: pk_val,
                 }, [self.lookup_isnull_name]),
@@ -455,7 +470,7 @@ class AllValuesFieldListFilter(ListFieldFilter):
             if val is None:
                 include_none = True
                 continue
-            val = smart_unicode(val)
+            val = smart_text(val)
             yield {
                 'selected': self.lookup_exact_val == val,
                 'query_string': self.query_string({self.lookup_exact_name: val},

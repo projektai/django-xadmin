@@ -1,4 +1,5 @@
 import sys
+from imp import reload
 from functools import update_wrapper
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -6,7 +7,8 @@ from django.db.models.base import ModelBase
 from django.views.decorators.cache import never_cache
 
 reload(sys)
-sys.setdefaultencoding("utf-8")
+if sys.version_info.major < 3:
+  sys.setdefaultencoding("utf-8")
 
 
 class AlreadyRegistered(Exception):
@@ -305,7 +307,7 @@ class AdminSite(object):
                                 )
 
         # Add in each model's views.
-        for model, admin_class in self._registry.iteritems():
+        for model, admin_class in self._registry.items():
             view_urls = [url(
                 path, wrap(
                     self.create_model_admin_view(clz, model, admin_class)),

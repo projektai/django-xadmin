@@ -7,7 +7,12 @@ from functools import update_wrapper
 from inspect import getargspec
 
 from django import forms
-from django.utils.encoding import force_unicode
+if sys.version_info.major < 3:
+  from django.utils.encoding import force_unicode
+  from django.utils.encoding import smart_unicode
+else:
+  from django.utils.encoding import force_text
+  from django.utils.encoding import smart_text
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -18,7 +23,6 @@ from django.template import Context, Template
 from django.template.response import TemplateResponse
 from django.utils.datastructures import SortedDict
 from django.utils.decorators import method_decorator, classonlymethod
-from django.utils.encoding import smart_unicode
 from django.utils.http import urlencode
 from django.utils.itercompat import is_iterable
 from django.utils.safestring import mark_safe
@@ -83,7 +87,7 @@ def inclusion_tag(file_name, context_class=Context, takes_context=False):
             from django.template.loader import get_template, select_template
             if isinstance(file_name, Template):
                 t = file_name
-            elif not isinstance(file_name, basestring) and is_iterable(file_name):
+            elif not isinstance(file_name, str) and is_iterable(file_name):
                 t = select_template(file_name)
             else:
                 t = get_template(file_name)
@@ -115,7 +119,7 @@ class JSONEncoder(DjangoJSONEncoder):
             try:
                 return super(JSONEncoder, self).default(o)
             except Exception:
-                return smart_unicode(o)
+                return smart_text(o)
 
 
 class BaseAdminObject(object):
@@ -150,7 +154,7 @@ class BaseAdminObject(object):
             remove = []
         p = dict(self.request.GET.items()).copy()
         for r in remove:
-            for k in p.keys():
+            for k in list(p):
                 if k.startswith(r):
                     del p[k]
         for k, v in new_params.items():
@@ -168,7 +172,7 @@ class BaseAdminObject(object):
             remove = []
         p = dict(self.request.GET.items()).copy()
         for r in remove:
-            for k in p.keys():
+            for k in list(p):
                 if k.startswith(r):
                     del p[k]
         for k, v in new_params.items():
@@ -322,7 +326,7 @@ class CommAdminView(BaseAdminView):
                 continue
             app_label = model._meta.app_label
             model_dict = {
-                'title': unicode(capfirst(model._meta.verbose_name_plural)),
+                'title': capfirst(model._meta.verbose_name_plural),
                 'url': self.get_model_url(model, "changelist"),
                 'icon': self.get_model_icon(model),
                 'perm': self.get_model_perm(model, 'view'),
@@ -336,7 +340,7 @@ class CommAdminView(BaseAdminView):
                 nav_menu[app_key]['menus'].append(model_dict)
             else:
                 # Find app title
-                app_title = unicode(app_label.title())
+                app_title = app_label.title()
                 if app_label.lower() in self.apps_label_title:
                     app_title = self.apps_label_title[app_label.lower()]
                 else:
@@ -365,8 +369,8 @@ class CommAdminView(BaseAdminView):
         for menu in nav_menu.values():
             menu['menus'].sort(key=sortkeypicker(['order', 'title']))
 
-        nav_menu = nav_menu.values()
-        nav_menu.sort(key=lambda x: x['title'])
+        nav_menu = list(nav_menu.values())
+        list(nav_menu).sort(key=lambda x: x['title'])
 
         site_menu.extend(nav_menu)
 
@@ -399,7 +403,7 @@ class CommAdminView(BaseAdminView):
                 return item
 
             nav_menu = [filter_item(item) for item in menus if check_menu_permission(item)]
-            nav_menu = filter(lambda i: bool(i['menus']), nav_menu)
+            #nav_menu = filter(lambda i: bool(i['menus']), nav_menu)
 
             if not settings.DEBUG:
                 self.request.session['nav_menu'] = json.dumps(nav_menu)
@@ -470,7 +474,7 @@ class ModelAdminView(CommAdminView):
             "opts": self.opts,
             "app_label": self.app_label,
             "module_name": self.module_name,
-            "verbose_name": force_unicode(self.opts.verbose_name),
+            "verbose_name": force_text(self.opts.verbose_name),
             'model_icon': self.get_model_icon(self.model),
         }
         context = super(ModelAdminView, self).get_context()

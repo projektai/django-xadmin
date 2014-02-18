@@ -7,7 +7,14 @@ from django.template import loader
 from django.http import HttpResponseNotFound
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
-from django.utils.encoding import smart_unicode
+import sys
+if sys.version_info.major < 3:
+   from django.utils.encoding import smart_unicode
+   from xadmin.util import lookup_field, label_for_field, force_unicode, json
+else:
+   from django.utils.encoding import smart_text
+   from xadmin.util import lookup_field, label_for_field, force_text, json
+
 from django.db import models
 from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _, ugettext
@@ -15,7 +22,6 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ListAdminView
 from xadmin.views.dashboard import ModelBaseWidget, widget_manager
-from xadmin.util import lookup_field, label_for_field, force_unicode, json
 
 
 @widget_manager.register
@@ -75,7 +81,7 @@ class JSONEncoder(DjangoJSONEncoder):
             try:
                 return super(JSONEncoder, self).default(o)
             except Exception:
-                return smart_unicode(o)
+                return smart_text(o)
 
 
 class ChartsPlugin(BaseAdminPlugin):
@@ -121,7 +127,7 @@ class ChartsView(ListAdminView):
         self.y_fields = (
             y_fields,) if type(y_fields) not in (list, tuple) else y_fields
 
-        datas = [{"data":[], "label": force_unicode(label_for_field(
+        datas = [{"data":[], "label": force_text(label_for_field(
             i, self.model, model_admin=self))} for i in self.y_fields]
 
         self.make_result_list()
