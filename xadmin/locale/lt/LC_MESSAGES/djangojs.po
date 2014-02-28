@@ -20,39 +20,39 @@ msgstr ""
 #: static/xadmin/js/xadmin.plugin.actions.js:20
 msgid "%(sel)s of %(cnt)s selected"
 msgid_plural "%(sel)s of %(cnt)s selected"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(sel)s iš %(cnt)s pasirinkta"
+msgstr[1] "%(sel)s iš %(cnt)s pasirinkta"
+msgstr[2] "%(sel)s iš %(cnt)s pasirinkta"
 
 #: static/xadmin/js/xadmin.plugin.revision.js:25
 msgid "New Item"
-msgstr ""
+msgstr "Naujas objektas"
 
 #: static/xadmin/js/xadmin.widget.datetime.js:32
 msgid "Sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
-msgstr ""
+msgstr "Sekmadienis Pirmadienis Antradienis Trečiadienis Ketvirtadienis Penktadienis Šeštadienis"
 
 #: static/xadmin/js/xadmin.widget.datetime.js:33
 msgid "Sun Mon Tue Wed Thu Fri Sat Sun"
-msgstr ""
+msgstr "Sek Pir Ant Tre Ket Pen Šeš"
 
 #: static/xadmin/js/xadmin.widget.datetime.js:34
 msgid "Su Mo Tu We Th Fr Sa Su"
-msgstr ""
+msgstr "Se Pi An Tr Ke Pn Še"
 
 #: static/xadmin/js/xadmin.widget.datetime.js:35
 msgid ""
 "January February March April May June July August September October November"
 " December"
-msgstr ""
+msgstr "Sausis Vasaris Kovas Balandis Gegužė Birželis Liepa Rugpjūtis Spalis Lapkritis Gruodis"
 
 #: static/xadmin/js/xadmin.widget.datetime.js:36
 msgid "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
-msgstr ""
+msgstr "Sau Vas Kov Bal Geg Bir Lie Rugp Rugs Spa Lap Gru"
 
 #: static/xadmin/js/xadmin.widget.datetime.js:37
 msgid "Today"
-msgstr ""
+msgstr "Šiandien"
 
 #: static/xadmin/js/xadmin.widget.datetime.js:38
 msgid "%a %d %b %Y %T %Z"
