@@ -169,6 +169,7 @@ class BookmarkAdmin(object):
 @widget_manager.register
 class BookmarkWidget(PartialBaseWidget):
     widget_type = _('bookmark')
+    widget_title = _('bookmark')
     description = _(
         'Bookmark Widget, can show user\'s bookmark list data in widget.')
     template = "xadmin/widgets/list.html"

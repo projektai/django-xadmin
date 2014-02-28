@@ -366,6 +366,7 @@ class PartialBaseWidget(BaseWidget):
 @widget_manager.register
 class QuickBtnWidget(BaseWidget):
     widget_type = 'qbutton'
+    widget_title = _('quick button')
     description = _(u'Quick button Widget, quickly open any page.')
     template = "xadmin/widgets/qbutton.html"
     base_title = _(u"Quick Buttons")
@@ -409,6 +410,7 @@ class QuickBtnWidget(BaseWidget):
 @widget_manager.register
 class ListWidget(ModelBaseWidget, PartialBaseWidget):
     widget_type = 'list'
+    widget_title = _('list')
     description = _(u'Any Objects list Widget.')
     template = "xadmin/widgets/list.html"
     model_perm = 'view'
@@ -448,6 +450,7 @@ class ListWidget(ModelBaseWidget, PartialBaseWidget):
 @widget_manager.register
 class AddFormWidget(ModelBaseWidget, PartialBaseWidget):
     widget_type = 'addform'
+    widget_title = _('addform')
     description = _(u'Add any model object Widget.')
     template = "xadmin/widgets/addform.html"
     model_perm = 'add'

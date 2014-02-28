@@ -27,6 +27,7 @@ from xadmin.views.dashboard import ModelBaseWidget, widget_manager
 @widget_manager.register
 class ChartWidget(ModelBaseWidget):
     widget_type = 'chart'
+    widget_title = _('chart')
     description = _('Show models simple chart.')
     template = 'xadmin/widgets/chart.html'
 
