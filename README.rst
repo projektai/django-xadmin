@@ -55,15 +55,12 @@ Install
 
 Xadmin is best installed via PyPI. To install the latest version, run:
 
-.. code:: bash
 
-    pip install django-xadmin
-
-or Install from github source:
+Install from github source:
 
 .. code:: bash
 
-    pip install git+git://github.com/sshwsfc/django-xadmin.git
+    pip install git+git://github.com/projektai/django-xadmin
 
 Install Requires 
 ----------------
