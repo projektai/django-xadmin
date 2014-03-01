@@ -32,7 +32,7 @@ class WizardFormPlugin(BaseAdminPlugin):
     def _get_form_prefix(self, step=None):
         if step is None:
             step = self.steps.current
-        return 'step_%d' % self.get_form_list().keys().index(step)
+        return 'step_%d' % list(self.get_form_list()).index(step)
 
     def get_form_list(self):
         if not hasattr(self, '_form_list'):

@@ -247,9 +247,10 @@ class DateFieldListFilter(ListFieldFilter):
         return isinstance(field, models.DateField)
 
     def __init__(self, field, request, params, model, admin_view, field_path):
-        self.field_generic = '%s__' % field_path
+        prefix = b'__'
+        self.field_generic = bytes('%s%s' % (bytes(field_path, 'utf-8'), prefix),'utf-8')
         self.date_params = dict([(FILTER_PREFIX + k, v) for k, v in params.items()
-                                 if k.startswith(self.field_generic)])
+                                 if k.startswith(str(self.field_generic,'utf-8'))])
 
         super(DateFieldListFilter, self).__init__(
             field, request, params, model, admin_view, field_path)

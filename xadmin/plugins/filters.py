@@ -12,7 +12,7 @@ import sys
 if sys.version_info.major < 3:
    from django.utils.encoding import smart_str
 else:
-   from django.utils.encoding import smart_bytes
+   from django.utils.encoding import smart_bytes, smart_text
 from django.utils.translation import ugettext as _
 
 from xadmin.filters import manager as filter_manager, FILTER_PREFIX, SEARCH_VAR, DateFieldListFilter, RelatedFieldSearchFilter
@@ -75,7 +75,7 @@ class FilterPlugin(BaseAdminPlugin):
         return clean_lookup in self.list_filter
 
     def get_list_queryset(self, queryset):
-        lookup_params = dict([(smart_bytes(k)[len(FILTER_PREFIX):], v) for k, v in self.admin_view.params.items()
+        lookup_params = dict([(smart_text(k)[len(FILTER_PREFIX):], v) for k, v in self.admin_view.params.items()
                               if str(k).startswith(FILTER_PREFIX) and v != ''])
         for p_key, p_val in lookup_params.items():
             if p_val == "False":

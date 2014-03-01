@@ -102,8 +102,11 @@ def lookup_needs_distinct(opts, lookup_path):
     """
     Returns True if 'distinct()' should be used to query the given lookup path.
     """
-    field_name = lookup_path.split('__', 1)[0]
-    field = opts.get_field_by_name(field_name)[0]
+    if (isinstance(lookup_path, str)):
+       field_name = bytes(lookup_path, 'utf-8').split(b'__', 1)[0] 
+    else:
+       field_name = lookup_path.split(b'__', 1)[0]
+    field = opts.get_field_by_name(str(field_name, 'utf-8'))[0]
     if ((hasattr(field, 'rel') and
          isinstance(field.rel, models.ManyToManyRel)) or
         (isinstance(field, models.related.RelatedObject) and
