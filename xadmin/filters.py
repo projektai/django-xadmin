@@ -192,6 +192,7 @@ class ChoicesFieldListFilter(ListFieldFilter):
 
     def choices(self):
         self.lookup_exact_val=''
+        self.lookup_exact_name=''
         yield {
             'selected': self.lookup_exact_val is '',
             'query_string': self.query_string({}, [self.lookup_exact_name]),
@@ -313,7 +314,7 @@ class DateFieldListFilter(ListFieldFilter):
             yield {
                 'selected': self.date_params == param_dict,
                 'query_string': self.query_string(
-                param_dict, [FILTER_PREFIX + self.field_generic]),
+                param_dict, [FILTER_PREFIX + str(self.field_generic, 'utf-8')]),
                 'display': title,
             }
 
