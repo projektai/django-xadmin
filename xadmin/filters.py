@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ImproperlyConfigured
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import smart_unicode
+   from django.utils.encoding import smart_unicode as smart_text
 else:
    from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _

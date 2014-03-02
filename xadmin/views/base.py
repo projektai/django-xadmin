@@ -8,8 +8,8 @@ from inspect import getargspec
 
 from django import forms
 if sys.version_info.major < 3:
-  from django.utils.encoding import force_unicode
-  from django.utils.encoding import smart_unicode
+  from django.utils.encoding import force_unicode as force_text
+  from django.utils.encoding import smart_unicode as smart_text
 else:
   from django.utils.encoding import force_text
   from django.utils.encoding import smart_text

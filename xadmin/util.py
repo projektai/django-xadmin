@@ -10,7 +10,7 @@ from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode, smart_unicode, smart_str
+   from django.utils.encoding import force_unicode as force_text, smart_unicode as smart_text, smart_str as smart_bytes
 else:
    from django.utils.encoding import force_text, smart_text, smart_bytes
 from django.utils.translation import ungettext

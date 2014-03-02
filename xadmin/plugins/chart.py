@@ -9,11 +9,10 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import smart_unicode
-   from xadmin.util import lookup_field, label_for_field, force_unicode, json
+   from django.utils.encoding import smart_unicode as smart_text
 else:
    from django.utils.encoding import smart_text
-   from xadmin.util import lookup_field, label_for_field, force_text, json
+from xadmin.util import lookup_field, label_for_field, force_text, json
 
 from django.db import models
 from django.utils.http import urlencode

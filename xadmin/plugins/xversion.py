@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode
+   from django.utils.encoding import force_unicode as force_text
 else:
    from django.utils.encoding import force_text
 

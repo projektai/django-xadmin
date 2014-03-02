@@ -2,8 +2,8 @@
 from django.core.urlresolvers import reverse
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode
-   from django.utils.encoding import smart_str
+   from django.utils.encoding import force_unicode as force_text
+   from django.utils.encoding import smart_str as smart_text
 else:
    from django.utils.encoding import force_text
    from django.utils.encoding import smart_bytes, smart_text

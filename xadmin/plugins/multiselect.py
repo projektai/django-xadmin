@@ -8,7 +8,7 @@ from django.forms.util import flatatt
 from django.template import loader
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode
+   from django.utils.encoding import force_unicode as force_text
 else:
    from django.utils.encoding import force_text
 

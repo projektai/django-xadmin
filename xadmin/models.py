@@ -9,7 +9,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.base import ModelBase
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import smart_unicode
+   from django.utils.encoding import smart_unicode as smart_text
 else:
    from django.utils.encoding import smart_text
 

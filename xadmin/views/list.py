@@ -6,7 +6,7 @@ from django.template.response import SimpleTemplateResponse, TemplateResponse
 from django.utils.datastructures import SortedDict
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode, smart_unicode
+   from django.utils.encoding import force_unicode as force_text, smart_unicode as smart_text
 else:
    from django.utils.encoding import force_text, smart_text
 from django.utils.html import escape, conditional_escape

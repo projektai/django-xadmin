@@ -3,7 +3,7 @@ from django.utils.datastructures import SortedDict
 from django.utils.html import escape
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode
+   from django.utils.encoding import force_unicode as force_text
 else:
    from django.utils.encoding import force_text
 

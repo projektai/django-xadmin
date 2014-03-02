@@ -10,7 +10,7 @@ from django.db.models.sql.query import LOOKUP_SEP, QUERY_TERMS
 from django.template import loader
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import smart_str
+   from django.utils.encoding import smart_str as smart_text
 else:
    from django.utils.encoding import smart_bytes, smart_text
 from django.utils.translation import ugettext as _

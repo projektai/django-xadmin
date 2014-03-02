@@ -6,7 +6,7 @@ from django.forms.models import modelform_factory
 from django.http import Http404, HttpResponse
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode, smart_unicode
+   from django.utils.encoding import force_unicode as force_text, smart_unicode as smart_text
 else:
    from django.utils.encoding import force_text, smart_text
 

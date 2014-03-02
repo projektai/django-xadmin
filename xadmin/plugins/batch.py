@@ -7,7 +7,7 @@ from django.forms.models import modelform_factory
 from django.template.response import TemplateResponse
 import sys
 if sys.version_info.major < 3:
-   from django.utils.encoding import force_unicode
+   from django.utils.encoding import force_unicode as force_text
 else:
    from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
