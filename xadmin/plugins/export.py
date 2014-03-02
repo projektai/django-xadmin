@@ -1,9 +1,9 @@
 import sys
 if sys.version_info.major < 3:
    import StringIO
-   from django.utils.encoding import force_unicode, smart_unicode
+   from django.utils.encoding import force_unicode as force_text, smart_unicode as smart_text
 else:
-   from io import StringIO
+   from io import BytesIO, StringIO
    from django.utils.encoding import force_text, smart_text
 import datetime
 
@@ -90,14 +90,17 @@ class ExportPlugin(BaseAdminPlugin):
 
     def get_xlsx_export(self, context):
         datas = self._get_datas(context)
-        output = StringIO.StringIO()
+        if sys.version_info.major < 3:
+            output = StringIO.StringIO()
+        else:
+            output = BytesIO()
         export_header = (
             self.request.GET.get('export_xlsx_header', 'off') == 'on')
 
         model_name = self.opts.verbose_name
         book = xlsxwriter.Workbook(output)
         sheet = book.add_worksheet(
-            u"%s %s" % (_(u'Sheet'), force_unicode(model_name)))
+            u"%s %s" % (_(u'Sheet'), force_text(model_name)))
         styles = {'datetime': book.add_format({'num_format': 'yyyy-mm-dd hh:mm:ss'}),
                   'date': book.add_format({'num_format': 'yyyy-mm-dd'}),
                   'time': book.add_format({'num_format': 'hh:mm:ss'}),
@@ -127,7 +130,10 @@ class ExportPlugin(BaseAdminPlugin):
 
     def get_xls_export(self, context):
         datas = self._get_datas(context)
-        output = StringIO.StringIO()
+        if sys.version_info.major < 3:
+            output = StringIO.StringIO()
+        else:
+            output = BytesIO()
         export_header = (
             self.request.GET.get('export_xls_header', 'off') == 'on')
 
@@ -189,7 +195,7 @@ class ExportPlugin(BaseAdminPlugin):
                 self._to_xml(xml, item)
                 xml.endElement("row")
         elif isinstance(data, dict):
-            for key, value in data.iteritems():
+            for key, value in data.items():
                 key = key.replace(' ', '_')
                 xml.startElement(key, {})
                 self._to_xml(xml, value)
@@ -199,7 +205,7 @@ class ExportPlugin(BaseAdminPlugin):
 
     def get_xml_export(self, context):
         results = self._get_objects(context)
-        stream = StringIO.StringIO()
+        stream = StringIO()
 
         xml = SimplerXMLGenerator(stream, "utf-8")
         xml.startDocument()
@@ -232,7 +238,7 @@ class ExportPlugin(BaseAdminPlugin):
     # View Methods
     def get_result_list(self, __):
         if self.request.GET.get('all', 'off') == 'on':
-            self.admin_view.list_per_page = sys.maxint
+            self.admin_view.list_per_page = 0
         return __()
 
     def result_header(self, item, field_name, row):
