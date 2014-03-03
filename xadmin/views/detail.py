@@ -217,7 +217,7 @@ class DetailAdminView(ModelAdminView):
         replace_field_to_value(layout, self.get_field_result)
         helper.add_layout(layout)
         helper.filter(
-            basestring, max_level=20).wrap(ShowField, admin_view=self)
+            str, max_level=20).wrap(ShowField, admin_view=self)
         return helper
 
     @csrf_protect_m

@@ -122,14 +122,14 @@ class FieldFilter(BaseFilter):
             else:
                 self.context_params["%s_val" % name] = ''
 
-        map(lambda kv: setattr(
-            self, 'lookup_' + kv[0], kv[1]), self.context_params.items())
+        list(map(lambda kv: setattr(
+            self, 'lookup_' + kv[0], kv[1]), self.context_params.items()))
 
     def get_context(self):
         context = super(FieldFilter, self).get_context()
         context.update(self.context_params)
         context['remove_url'] = self.query_string(
-            {}, map(lambda k: FILTER_PREFIX + k, self.used_params.keys()))
+            {}, list(map(lambda k: FILTER_PREFIX + k, self.used_params.keys())))
         return context
 
     def has_output(self):
@@ -157,10 +157,6 @@ class BooleanFieldListFilter(ListFieldFilter):
         return isinstance(field, (models.BooleanField, models.NullBooleanField))
 
     def choices(self):
-        self.lookup_exact_val=''
-        self.lookup_isnull_val=''
-        self.lookup_exact_name=''
-        self.lookup_isnull_name=''
         for lookup, title in (
                 ('', _('All')),
                 ('1', _('Yes')),
@@ -191,8 +187,6 @@ class ChoicesFieldListFilter(ListFieldFilter):
         return bool(field.choices)
 
     def choices(self):
-        self.lookup_exact_val=''
-        self.lookup_exact_name=''
         yield {
             'selected': self.lookup_exact_val is '',
             'query_string': self.query_string({}, [self.lookup_exact_name]),
@@ -271,9 +265,6 @@ class DateFieldListFilter(ListFieldFilter):
         else:       # field is a models.DateField
             today = now.date()
         tomorrow = today + datetime.timedelta(days=1)
-        self.lookup_isnull_name=''
-        self.lookup_since_name=''
-        self.lookup_until_name=''
         self.links = (
             (_('Any date'), {}),
             (_('Has date'), {
@@ -302,9 +293,6 @@ class DateFieldListFilter(ListFieldFilter):
 
     def get_context(self):
         context = super(DateFieldListFilter, self).get_context()
-        self.lookup_year_val=''
-        self.lookup_month_val=''
-        self.lookup_day_val=''
         context['choice_selected'] = bool(self.lookup_year_val) or bool(self.lookup_month_val) \
             or bool(self.lookup_day_val)
         return context
@@ -349,7 +337,6 @@ class RelatedFieldSearchFilter(FieldFilter):
         self.title = self.lookup_title
         self.search_url = model_admin.get_admin_url('%s_%s_changelist' % (
             other_model._meta.app_label, other_model._meta.module_name))
-        self.lookup_exact_val=''
         self.label = self.label_for_value(other_model, rel_name, self.lookup_exact_val) if self.lookup_exact_val else ""
         self.choices = '?'
         if field.rel.limit_choices_to:
