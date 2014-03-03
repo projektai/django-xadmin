@@ -137,7 +137,7 @@ class FilterPlugin(BaseAdminPlugin):
                     if new_qs is not None:
                         queryset = new_qs
 
-                    self.filter_specs.append(spec)
+                self.filter_specs.append(spec)
 
         self.has_filters = bool(self.filter_specs)
         self.admin_view.filter_specs = self.filter_specs
