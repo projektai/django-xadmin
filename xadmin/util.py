@@ -60,7 +60,7 @@ def xstatic(*tags):
             if tag.startswith('xadmin'):
                 file_type = tag.split('.')[-1]
                 if file_type in ('css', 'js'):
-                    node = "xadmin/%s/%s" % (file_type, tag)
+                    node = str("xadmin/%s/%s" % (file_type, tag))
                 else:
                     raise e
             else:
@@ -102,11 +102,12 @@ def lookup_needs_distinct(opts, lookup_path):
     """
     Returns True if 'distinct()' should be used to query the given lookup path.
     """
-    if (isinstance(lookup_path, str)):
-       field_name = bytes(lookup_path, 'utf-8').split(b'__', 1)[0] 
+    if sys.version_info.major < 3:
+        field_name = lookup_path.split(b'__', 1)[0]
+        field = opts.get_field_by_name(str(field_name))[0]
     else:
-       field_name = lookup_path.split(b'__', 1)[0]
-    field = opts.get_field_by_name(str(field_name, 'utf-8'))[0]
+        field_name = bytes(lookup_path, 'utf-8').split(b'__', 1)[0]
+        field = opts.get_field_by_name(str(field_name, 'utf-8'))[0]
     if ((hasattr(field, 'rel') and
          isinstance(field.rel, models.ManyToManyRel)) or
         (isinstance(field, models.related.RelatedObject) and

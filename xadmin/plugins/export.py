@@ -205,7 +205,10 @@ class ExportPlugin(BaseAdminPlugin):
 
     def get_xml_export(self, context):
         results = self._get_objects(context)
-        stream = StringIO()
+        if sys.version_info.major < 3:
+            stream = StringIO.StringIO()
+        else:
+            stream = StringIO()
 
         xml = SimplerXMLGenerator(stream, "utf-8")
         xml.startDocument()
