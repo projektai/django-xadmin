@@ -47,6 +47,7 @@ LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
     ('en', gettext('English')),
     ('zh_CN', gettext('Chinese')),
+    ('lt', gettext('Lithuanian')),
 )
 
 SITE_ID = 1
@@ -114,6 +115,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Uncoment the next line to get multilanguage support
+    # 'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'demo.urls'
