@@ -149,7 +149,7 @@ msgstr "Dabar"
 #: plugins/actions.py:54
 #, python-format
 msgid "Delete selected %(verbose_name_plural)s"
-msgstr "Ištrintit pažymėtus %(verbose_name_plural)s"
+msgstr "Ištrinti pažymėtus %(verbose_name_plural)s"
 
 #: plugins/actions.py:67
 #, python-format

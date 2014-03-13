@@ -11,7 +11,7 @@ if sys.version_info.major < 3:
 else:
    from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import ugettext_lazy as _, ungettext
 from django.utils.text import capfirst
 from xadmin.sites import site
 from xadmin.util import model_format_dict, get_deleted_objects, model_ngettext
