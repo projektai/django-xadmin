@@ -137,7 +137,7 @@ class BaseRelateDisplayPlugin(BaseAdminPlugin):
         for k, v in self.request.REQUEST.items():
             if smart_text(k).startswith(RELATE_PREFIX):
                 self.relate_obj = RelateObject(
-                    self.admin_view, smart_str(k)[len(RELATE_PREFIX):], v)
+                    self.admin_view, smart_text(k)[len(RELATE_PREFIX):], v)
                 break
         return bool(self.relate_obj)
 

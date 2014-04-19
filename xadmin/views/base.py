@@ -370,7 +370,7 @@ class CommAdminView(BaseAdminView):
             menu['menus'].sort(key=sortkeypicker(['order', 'title']))
 
         nav_menu = list(nav_menu.values())
-        list(nav_menu).sort(key=lambda x: x['title'])
+        nav_menu.sort(key=lambda x: x['title'])
 
         site_menu.extend(nav_menu)
 
