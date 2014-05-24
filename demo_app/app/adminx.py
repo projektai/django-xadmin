@@ -30,8 +30,9 @@ xadmin.site.register(views.BaseAdminView, BaseSetting)
 class GlobalSetting(object):
     global_search_models = [Host, IDC]
     global_models_icon = {
-        Host: 'laptop', IDC: 'cloud'
+        Host: 'fa fa-laptop', IDC: 'fa fa-cloud'
     }
+    menu_style = 'accordion'#'default'
 xadmin.site.register(views.CommAdminView, GlobalSetting)
 
 
@@ -74,8 +75,9 @@ class HostAdmin(object):
 
     search_fields = ['name', 'ip', 'description']
     list_filter = ['idc', 'guarantee_date', 'status', 'brand', 'model',
-                   'cpu', 'core_num', 'hard_disk', 'memory', 'service_type']
-
+                   'cpu', 'core_num', 'hard_disk', 'memory', ('service_type',xadmin.filters.MultiSelectFieldListFilter)]
+    
+    list_quick_filter = ['service_type',{'field':'idc__name','limit':10}]
     list_bookmarks = [{'title': "Need Guarantee", 'query': {'status__exact': 2}, 'order': ('-guarantee_date',), 'cols': ('brand', 'guarantee_date', 'service_type')}]
 
     show_detail_fields = ('idc',)
@@ -84,6 +86,7 @@ class HostAdmin(object):
     save_as = True
 
     aggregate_fields = {"guarantee_date": "min"}
+    grid_layouts = ('table', 'thumbnails')
 
     form_layout = (
         Main(

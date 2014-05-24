@@ -26,9 +26,9 @@ from xadmin.views.dashboard import ModelBaseWidget, widget_manager
 @widget_manager.register
 class ChartWidget(ModelBaseWidget):
     widget_type = 'chart'
-    widget_title = _('chart')
     description = _('Show models simple chart.')
     template = 'xadmin/widgets/chart.html'
+    widget_icon = 'fa fa-bar-chart-o'
 
     def convert(self, data):
         self.list_params = data.pop('params', {})

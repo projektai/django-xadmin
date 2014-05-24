@@ -5591,6 +5591,7 @@ a.list-group-item:focus {
 a.list-group-item.active,
 a.list-group-item.active:hover,
 a.list-group-item.active:focus {
+  z-index: 2;
   color: #ffffff;
   background-color: #428bca;
   border-color: #428bca;

@@ -13,7 +13,7 @@ from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
 from django.utils.translation import ugettext as _
 
-from  xadmin.util import vendor
+from xadmin.util import vendor
 
 
 class AdminDateWidget(forms.DateInput):
@@ -30,7 +30,7 @@ class AdminDateWidget(forms.DateInput):
 
     def render(self, name, value, attrs=None):
         input_html = super(AdminDateWidget, self).render(name, value, attrs)
-        return mark_safe('<div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="icon-calendar"></i></span>%s'
+        return mark_safe('<div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>%s'
                          '<span class="input-group-btn"><button class="btn btn-default" type="button">%s</button></span></div>' % (input_html, _(u'Today')))
 
 
@@ -48,7 +48,7 @@ class AdminTimeWidget(forms.TimeInput):
 
     def render(self, name, value, attrs=None):
         input_html = super(AdminTimeWidget, self).render(name, value, attrs)
-        return mark_safe('<div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="icon-time">'
+        return mark_safe('<div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="fa fa-clock-o">'
                          '</i></span>%s<span class="input-group-btn"><button class="btn btn-default" type="button">%s</button></span></div>' % (input_html, _(u'Now')))
 
 

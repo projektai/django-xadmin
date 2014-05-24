@@ -406,12 +406,12 @@ def help_text_for_field(name, model):
 
 
 def admin_urlname(value, arg):
-    return 'admin:%s_%s_%s' % (value.app_label, value.module_name, arg)
+    return 'xadmin:%s_%s_%s' % (value.app_label, value.module_name, arg)
 
 
 def boolean_icon(field_val):
     return mark_safe(u'<i class="%s" alt="%s"></i>' % (
-        {True: 'icon-ok-sign text-success', False: 'icon-remove-sign text-error', None: 'icon-question-sign muted'}[field_val], field_val))
+        {True: 'fa fa-check-circle text-success', False: 'fa fa-times-circle text-error', None: 'fa fa-question-circle muted'}[field_val], field_val))
 
 
 def display_for_field(value, field):

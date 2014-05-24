@@ -40,7 +40,6 @@
       ampmLower: gettext("am pm").split(' '),
       dateFormat: get_format('DATE_INPUT_FORMATS')[0],
       dateJSFormat: $.convert_format(get_format('DATE_INPUT_FORMATS')[0]),
-      weekStart: get_format('FIRST_DAY_OF_WEEK'),
       timeRepr: gettext('%T')
     }
 

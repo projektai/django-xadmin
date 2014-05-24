@@ -226,6 +226,9 @@ class InlineModelAdmin(ModelFormAdminView):
                         elif inspect.ismethod(getattr(inst, readonly_field, None)):
                             value = getattr(inst, readonly_field)()
                             label = getattr(getattr(inst, readonly_field), 'short_description', readonly_field)
+                        elif inspect.ismethod(getattr(self, readonly_field, None)):
+                            value = getattr(self, readonly_field)(inst)
+                            label = getattr(getattr(self, readonly_field), 'short_description', readonly_field)
                         if value:
                             form.readonly_fields.append({'label': label, 'contents': value})
         return instance
@@ -406,8 +409,8 @@ class InlineFormsetPlugin(BaseAdminPlugin):
 
     def get_form_layout(self, layout):
         allow_blank = isinstance(self.admin_view, DetailAdminView)
-        fs = dict(
-            [(f.model, InlineFormset(f, allow_blank)) for f in self.formsets])
+        # fixed #176 bug, change dict to list
+        fs = [(f.model, InlineFormset(f, allow_blank)) for f in self.formsets]
         replace_inline_objects(layout, fs)
 
         if fs:
@@ -417,8 +420,9 @@ class InlineFormsetPlugin(BaseAdminPlugin):
             if not container:
                 container = layout
 
-            for fs in fs.values():
-                container.append(fs)
+            # fixed #176 bug, change dict to list
+            for key, value in fs:
+                container.append(value)
 
         return layout
 
