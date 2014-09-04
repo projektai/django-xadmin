@@ -20,7 +20,9 @@ from django.contrib.auth.models import Permission
 import datetime
 import decimal
 
-if django.VERSION[1] > 4:
+if   django.VERSION[1] > 6:
+    AUTH_USER_MODEL = settings.AUTH_USER_MODEL
+elif django.VERSION[1] > 4:
     AUTH_USER_MODEL = django.contrib.auth.get_user_model()
 else:
     AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
