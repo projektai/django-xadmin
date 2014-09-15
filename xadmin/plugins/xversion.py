@@ -30,6 +30,12 @@ from reversion.models import Revision, Version
 from reversion.revisions import default_revision_manager, RegistrationError
 from functools import partial
 
+#python 3 compatibility
+try:
+    xrange
+except NameError:
+    xrange = range
+
 
 def _autoregister(admin, model, follow=None):
     """Registers a model with reversion, if required."""
