@@ -36,6 +36,11 @@ try:
 except NameError:
     xrange = range
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 def _autoregister(admin, model, follow=None):
     """Registers a model with reversion, if required."""
