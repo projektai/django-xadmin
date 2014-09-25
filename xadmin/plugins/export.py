@@ -38,6 +38,8 @@ class ExportMenuPlugin(BaseAdminPlugin):
                     'xml': 'XML', 'json': 'JSON'}
 
     def init_request(self, *args, **kwargs):
+        if not self.has_model_perm(self.model, 'export'):
+            return False;
         self.list_export = [
             f for f in self.list_export
             if (f != 'xlsx' or has_xlsxwriter) and (f != 'xls' or has_xlwt)]
@@ -59,6 +61,8 @@ class ExportPlugin(BaseAdminPlugin):
                     'xml': 'application/xhtml+xml', 'json': 'application/json'}
 
     def init_request(self, *args, **kwargs):
+        if not self.has_model_perm(self.model, 'export'):
+            return False;
         return self.request.GET.get('_do_') == 'export'
 
     def _format_value(self, o):
