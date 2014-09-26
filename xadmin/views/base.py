@@ -537,6 +537,7 @@ class ModelAdminView(CommAdminView):
             'add': self.has_add_permission(),
             'change': self.has_change_permission(),
             'delete': self.has_delete_permission(),
+            'export': self.has_export_permission(),
         }
 
     def get_template_list(self, template_name):
@@ -573,3 +574,6 @@ class ModelAdminView(CommAdminView):
 
     def has_delete_permission(self, obj=None):
         return ('delete' not in self.remove_permissions) and self.user.has_perm('%s.delete_%s' % self.model_info)
+
+    def has_export_permission(self, obj=None):
+        return ('export' not in self.remove_permissions) and self.user.has_perm('%s.export_%s' % self.model_info)

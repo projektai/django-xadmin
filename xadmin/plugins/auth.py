@@ -23,6 +23,7 @@ ACTION_NAME = {
     'edit': _('Can edit %s'),
     'delete': _('Can delete %s'),
     'view': _('Can view %s'),
+    'export': _('Can export %s'),
 }
 
 
