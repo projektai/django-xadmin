@@ -28,30 +28,26 @@ else:
     AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
-def add_extra_permissions(sender, **kwargs):
+def add_view_permissions(sender, **kwargs):
     """
-    This syncdb hooks takes care of adding view and export permission too all
-    our content types.
+    This syncdb hooks takes care of adding a view permission too all our
+    content types.
     """
-
-    def add_permission(permission):
+    # for each of our content types
+    for content_type in ContentType.objects.all():
         # build our permission slug
-        codename = "%s_%s" % (permission, content_type.model)
+        codename = "view_%s" % content_type.model
 
         # if it doesn't exist..
         if not Permission.objects.filter(content_type=content_type, codename=codename):
             # add it
             Permission.objects.create(content_type=content_type,
                                       codename=codename,
-                                      name="Can %s %s" % (permission, content_type.name))
-
-    # for each of our content types
-    for content_type in ContentType.objects.all():
-        add_permission("view")
-        add_permission("export")
+                                      name="Can view %s" % content_type.name)
+            #print "Added view permission for %s" % content_type.name
 
 # check for all our view permissions after a syncdb
-post_syncdb.connect(add_extra_permissions)
+post_syncdb.connect(add_view_permissions)
 
 
 class Bookmark(models.Model):

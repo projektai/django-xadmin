@@ -22,7 +22,10 @@ class TopNavPlugin(BaseAdminPlugin):
         search_models = []
 
         site_name = self.admin_site.name
-        models = self.global_search_models or self.admin_site._registry.keys()
+        if self.global_search_models == None:
+            models = self.admin_site._registry.keys()
+        else:
+            models = self.global_search_models
 
         for model in models:
             app_label = model._meta.app_label
@@ -33,7 +36,7 @@ class TopNavPlugin(BaseAdminPlugin):
                     try:
                         search_models.append({
                             'title': _('Search %s') % capfirst(model._meta.verbose_name_plural),
-                            'url': reverse('admin:%s_%s_changelist' % info, current_app=site_name),
+                            'url': reverse('xadmin:%s_%s_changelist' % info, current_app=site_name),
                             'model': model
                         })
                     except NoReverseMatch:

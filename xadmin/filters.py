@@ -204,7 +204,7 @@ class ChoicesFieldListFilter(ListFieldFilter):
 @manager.register
 class TextFieldListFilter(FieldFilter):
     template = 'xadmin/filters/char.html'
-    lookup_formats = {'search': '%s__contains'}
+    lookup_formats = {'in': '%s__in','search': '%s__contains'}
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
@@ -265,6 +265,7 @@ class DateFieldListFilter(ListFieldFilter):
         else:       # field is a models.DateField
             today = now.date()
         tomorrow = today + datetime.timedelta(days=1)
+
         self.links = (
             (_('Any date'), {}),
             (_('Has date'), {
@@ -326,7 +327,7 @@ class RelatedFieldSearchFilter(FieldFilter):
         else:
             rel_name = other_model._meta.pk.name
 
-        self.lookup_formats = {'exact': '%%s__%s__exact' % rel_name}
+        self.lookup_formats = {'in': '%%s__%s__in' % rel_name,'exact': '%%s__%s__exact' % rel_name}
         super(RelatedFieldSearchFilter, self).__init__(
             field, request, params, model, model_admin, field_path)
 
