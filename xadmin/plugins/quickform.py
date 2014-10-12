@@ -56,6 +56,9 @@ class RelatedFieldWidgetWrapper(forms.Widget):
         self.add_url = add_url
         self.rel_add_url = rel_add_url
 
+        if hasattr(self, 'input_type'):
+            self.input_type = widget.input_type
+
     def __deepcopy__(self, memo):
         obj = copy.copy(self)
         obj.widget = copy.deepcopy(self.widget, memo)

@@ -379,7 +379,7 @@ class ListAdminView(ModelAdminView):
                         for f in (self.opts.fields + self.get_model_method_fields()) if f.name not in self.list_exclude]
 
         new_context = {
-            'module_name': force_text(self.opts.verbose_name_plural),
+            'model_name': force_text(self.opts.verbose_name_plural),
             'title': self.title,
             'cl': self,
             'model_fields': model_fields,

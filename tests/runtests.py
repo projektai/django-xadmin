@@ -4,6 +4,9 @@ import shutil
 import sys
 import tempfile
 
+import django
+
+
 TEST_ROOT = os.path.realpath(os.path.dirname(__file__))
 RUNTESTS_DIR = os.path.join(TEST_ROOT, 'xtests')
 
@@ -72,6 +75,8 @@ def setup(verbosity, test_labels):
     # Load all the ALWAYS_INSTALLED_APPS.
     # (This import statement is intentionally delayed until after we
     # access settings because of the USE_I18N dependency.)
+
+    django.setup()
     from django.db.models.loading import get_apps, load_app
     get_apps()
 

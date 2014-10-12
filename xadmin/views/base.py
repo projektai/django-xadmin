@@ -15,6 +15,7 @@ else:
   from django.utils.encoding import smart_text
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_permission_codename
 from django.core.exceptions import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.urlresolvers import reverse
@@ -137,11 +138,11 @@ class BaseAdminObject(object):
     def get_model_url(self, model, name, *args, **kwargs):
         return reverse(
             '%s:%s_%s_%s' % (self.admin_site.app_name, model._meta.app_label,
-                             model._meta.module_name, name),
+                             model._meta.model_name, name),
             args=args, kwargs=kwargs, current_app=self.admin_site.name)
 
     def get_model_perm(self, model, name):
-        return '%s.%s_%s' % (model._meta.app_label, name, model._meta.module_name)
+        return '%s.%s_%s' % (model._meta.app_label, name, model._meta.model_name)
 
     def has_model_perm(self, model, name, user=None):
         user = user or self.user
@@ -445,6 +446,7 @@ class CommAdminView(BaseAdminView):
             'menu_template': self.menu_template,
             'nav_menu': nav_menu,
             'site_title': self.site_title or _(u'Django Xadmin'),
+            'site_footer': self.site_footer or _(u'my-company.inc'),
             'breadcrumbs': self.get_breadcrumb()
         })
 
@@ -476,8 +478,8 @@ class ModelAdminView(CommAdminView):
     def __init__(self, request, *args, **kwargs):
         self.opts = self.model._meta
         self.app_label = self.model._meta.app_label
-        self.module_name = self.model._meta.module_name
-        self.model_info = (self.app_label, self.module_name)
+        self.model_name = self.model._meta.model_name
+        self.model_info = (self.app_label, self.model_name)
 
         super(ModelAdminView, self).__init__(request, *args, **kwargs)
 
@@ -486,7 +488,7 @@ class ModelAdminView(CommAdminView):
         new_context = {
             "opts": self.opts,
             "app_label": self.app_label,
-            "module_name": self.module_name,
+            "model_name": self.model_name,
             "verbose_name": force_text(self.opts.verbose_name),
             'model_icon': self.get_model_icon(self.model),
         }
@@ -529,7 +531,7 @@ class ModelAdminView(CommAdminView):
     def model_admin_url(self, name, *args, **kwargs):
         return reverse(
             "%s:%s_%s_%s" % (self.admin_site.app_name, self.opts.app_label,
-            self.module_name, name), args=args, kwargs=kwargs)
+            self.model_name, name), args=args, kwargs=kwargs)
 
     def get_model_perms(self):
         """
@@ -565,20 +567,27 @@ class ModelAdminView(CommAdminView):
         Returns a QuerySet of all model instances that can be edited by the
         admin site. This is used by changelist_view.
         """
-        return self.model._default_manager.get_query_set()
+        return self.model._default_manager.get_queryset()
 
     def has_view_permission(self, obj=None):
-        return ('view' not in self.remove_permissions) and (self.user.has_perm('%s.view_%s' % self.model_info) or \
-            self.user.has_perm('%s.change_%s' % self.model_info))
+        view_codename = get_permission_codename('view', self.opts)
+        change_codename = get_permission_codename('change', self.opts)
+
+        return ('view' not in self.remove_permissions) and (self.user.has_perm('%s.%s' % (self.app_label, view_codename)) or \
+            self.user.has_perm('%s.%s' % (self.app_label, change_codename)))
 
     def has_add_permission(self):
-        return ('add' not in self.remove_permissions) and self.user.has_perm('%s.add_%s' % self.model_info)
+        codename = get_permission_codename('add', self.opts)
+        return ('add' not in self.remove_permissions) and self.user.has_perm('%s.%s' % (self.app_label, codename))
 
     def has_change_permission(self, obj=None):
-        return ('change' not in self.remove_permissions) and self.user.has_perm('%s.change_%s' % self.model_info)
+        codename = get_permission_codename('change', self.opts)
+        return ('change' not in self.remove_permissions) and self.user.has_perm('%s.%s' % (self.app_label, codename))
 
     def has_delete_permission(self, obj=None):
-        return ('delete' not in self.remove_permissions) and self.user.has_perm('%s.delete_%s' % self.model_info)
+        codename = get_permission_codename('delete', self.opts)
+        return ('delete' not in self.remove_permissions) and self.user.has_perm('%s.%s' % (self.app_label, codename))
+
 
     def has_export_permission(self, obj=None):
         return ('export' not in self.remove_permissions) and self.user.has_perm('%s.export_%s' % self.model_info)

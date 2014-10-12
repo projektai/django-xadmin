@@ -388,10 +388,10 @@ class QuickBtnWidget(BaseWidget):
             btn = {}
             if 'model' in b:
                 model = self.get_model(b['model'])
-                if not self.user.has_perm("%s.view_%s" % (model._meta.app_label, model._meta.module_name)):
+                if not self.user.has_perm("%s.view_%s" % (model._meta.app_label, model._meta.model_name)):
                     continue
                 btn['url'] = reverse("%s:%s_%s_%s" % (self.admin_site.app_name, model._meta.app_label,
-                                                      model._meta.module_name, b.get('view', 'changelist')))
+                                                      model._meta.model_name, b.get('view', 'changelist')))
                 btn['title'] = model._meta.verbose_name
                 btn['icon'] = self.dashboard.get_model_icon(model)
             else:
@@ -582,7 +582,7 @@ class Dashboard(CommAdminView):
             'portal_key': self.get_portal_key(),
             'columns': [('col-sm-%d' % int(12 / len(self.widgets)), ws) for ws in self.widgets],
             'has_add_widget_permission': self.has_model_perm(UserWidget, 'add') and self.widget_customiz,
-            'add_widget_url': self.get_admin_url('%s_%s_add' % (UserWidget._meta.app_label, UserWidget._meta.module_name)) +
+            'add_widget_url': self.get_admin_url('%s_%s_add' % (UserWidget._meta.app_label, UserWidget._meta.model_name)) +
             "?user=%s&page_id=%s&_redirect=%s" % (self.user.id, self.get_page_id(), urlquote(self.request.get_full_path()))
         }
         context = super(Dashboard, self).get_context()

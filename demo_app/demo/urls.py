@@ -4,8 +4,8 @@ from django.conf.urls import patterns, include, url
 import xadmin
 xadmin.autodiscover()
 
-# from xadmin.plugins import xversion
-# xversion.register_models()
+from xadmin.plugins import xversion
+xversion.register_models()
 
 from django.contrib import admin
 admin.autodiscover()
