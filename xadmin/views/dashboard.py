@@ -269,7 +269,7 @@ class ModelChoiceIterator(object):
     def __iter__(self):
         from xadmin import site as g_admin_site
         for m, ma in g_admin_site._registry.items():
-            yield ('%s.%s' % (m._meta.app_label, m._meta.module_name),
+            yield ('%s.%s' % (m._meta.app_label, m._meta.model_name),
                    m._meta.verbose_name)
 
 
@@ -300,7 +300,7 @@ class ModelChoiceField(forms.ChoiceField):
 
     def prepare_value(self, value):
         if isinstance(value, ModelBase):
-            value = '%s.%s' % (value._meta.app_label, value._meta.module_name)
+            value = '%s.%s' % (value._meta.app_label, value._meta.model_name)
         return value
 
     def valid_value(self, value):
@@ -314,7 +314,7 @@ class ModelChoiceField(forms.ChoiceField):
 class ModelBaseWidget(BaseWidget):
 
     app_label = None
-    module_name = None
+    model_name = None
     model_perm = 'change'
     model = ModelChoiceField(label=_(u'Target Model'), widget=exwidgets.AdminSelectWidget)
 
@@ -325,7 +325,7 @@ class ModelBaseWidget(BaseWidget):
     def setup(self):
         self.model = self.cleaned_data['model']
         self.app_label = self.model._meta.app_label
-        self.module_name = self.model._meta.module_name
+        self.model_name = self.model._meta.model_name
 
         super(ModelBaseWidget, self).setup()
 
@@ -338,7 +338,7 @@ class ModelBaseWidget(BaseWidget):
     def model_admin_url(self, name, *args, **kwargs):
         return reverse(
             "%s:%s_%s_%s" % (self.admin_site.app_name, self.app_label,
-            self.module_name, name), args=args, kwargs=kwargs)
+            self.model_name, name), args=args, kwargs=kwargs)
 
 
 class PartialBaseWidget(BaseWidget):
