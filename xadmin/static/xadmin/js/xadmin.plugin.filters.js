@@ -1,12 +1,12 @@
 (function($) {
-   
+
   $(function(){
-    
+
 	// filter
     $('.filter-multiselect input[type=checkbox]').click(function(e){
     	window.location.href = $(this).parent().attr('href');
     });
-    
+
     // menber filter
     $('.filter-number .remove').click(function(e){
       $(this).parent().parent().find('input[type="number"]').val('');
@@ -28,7 +28,7 @@
       var el = $(this);
       var start_date = el.find('.calendar.date-start').datepicker({format: $.date_local.dateJSFormat, language: 'xadmin'});
       var end_date = el.find('.calendar.date-end').datepicker({format: $.date_local.dateJSFormat, language: 'xadmin'});
-      
+
       var checkAvailable = function(){
         if(start_date.data('datepicker').getDate().valueOf() <= end_date.data('datepicker').getDate().valueOf()){
           el.find('button[type=submit]').removeAttr('disabled');
@@ -36,7 +36,7 @@
           el.find('button[type=submit]').attr('disabled', 'disabled');
         }
       }
-      
+
       start_date.on('changeDate', function(ev){
           var startdate = start_date.data('date');
           el.find('.start_input').val(startdate);
@@ -49,8 +49,26 @@
           start_date.data('datepicker').setEndDate(enddate);
           checkAvailable();
       });
-      
+
       checkAvailable();
+    });
+
+    $('.typeahead-char').each(function(){
+      var search_url = $(this).attr('data-search-url');
+      $(this).typeahead({
+        minLength: 2,
+        source: function (query, process) {
+          return $.ajax({
+            url: search_url,
+            type: 'get',
+            data: {'_q_': query},
+            dataType: 'json',
+            success: function(json) {
+                return typeof json.options == 'undefined' ? false : process(json.options);
+            }
+          });
+        }
+      });
     });
   });
 

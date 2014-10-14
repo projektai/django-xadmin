@@ -192,6 +192,8 @@ class FilterPlugin(BaseAdminPlugin):
 
     # Media
     def get_media(self, media):
+        if bool(filter(lambda s: isinstance(s, CharFieldListFilter), self.filter_specs)):
+            media = media + self.vendor('typeahead.js')
         if bool(filter(lambda s: isinstance(s, DateFieldListFilter), self.filter_specs)):
             media = media + self.vendor('datepicker.css', 'datepicker.js',
                                         'xadmin.widget.datetime.js')

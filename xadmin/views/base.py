@@ -591,3 +591,28 @@ class ModelAdminView(CommAdminView):
 
     def has_export_permission(self, obj=None):
         return ('export' not in self.remove_permissions) and self.user.has_perm('%s.export_%s' % self.model_info)
+
+
+class AutocompleteView(BaseAdminView):
+    MAX_HINTS = 30
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        self.request_method = request.method.lower()
+
+    def get(self, request, *args, **kwargs):
+        from xadmin.filters import SEARCH_VAR
+        query = self.request.GET.get(SEARCH_VAR, '')
+        field = kwargs['field']
+
+        if query:
+            qargs = { field+'__startswith': query, }
+            queryset = self.model._default_manager.filter( **qargs ).values(field).distinct()
+            content = {'options': [v[field] for v in queryset[:self.MAX_HINTS]], }
+        else:
+            content = []
+
+        response = HttpResponse(content_type="application/json; charset=UTF-8")
+        response.write(
+            json.dumps(content, cls=JSONEncoder, ensure_ascii=False))
+        return response
