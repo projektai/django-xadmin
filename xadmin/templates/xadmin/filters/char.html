@@ -11,7 +11,7 @@
         {{ form_params|safe }}
         <div class="input-group">
           <input name="{{startswith_name}}" class="typeahead-char form-control" type="text" value="{{startswith_val}}"
-            data-search-url="{{search_url}}" placeholder="{% trans "Enter" %} {{title}}…"/>
+            data-search-url="{{search_url}}" placeholder="{% trans "Enter" %} {{title}}…" autocomplete="off" />
           <span class="input-group-btn">
           {% if startswith_val %}
             <a class="btn btn-default" href="{{remove_url}}">x</a>
