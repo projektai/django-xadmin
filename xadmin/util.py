@@ -395,10 +395,10 @@ def label_for_field(name, model, model_admin=None, return_attr=False):
                     label = field.opts.verbose_name
                 else:
                     label = field.verbose_name
-                
+
                 rel_model = field.rel.to
                 rel_label = label_for_field(name, rel_model, model_admin=model_admin, return_attr=return_attr)
-                
+
                 if return_attr:
                     rel_label,attr = rel_label
                     return ("%s %s"%(label,rel_label), attr)
@@ -443,8 +443,19 @@ def boolean_icon(field_val):
         {True: 'fa fa-check-circle text-success', False: 'fa fa-times-circle text-error', None: 'fa fa-question-circle muted'}[field_val], field_val))
 
 
+def collor_field(field_val):
+    format_str = """
+    <div class="sp-replacer sp-light sp-disabled">
+        <div class="sp-preview" style="margin-right: 0;">
+            <div class="sp-preview-inner" style="background-color: %s;"></div>
+        </div>
+    </div>
+    """
+    return mark_safe(format_str % field_val)
+
 def display_for_field(value, field):
     from xadmin.views.list import EMPTY_CHANGELIST_VALUE
+    from xadmin.fields import ColorField
 
     if field.flatchoices:
         return dict(field.flatchoices).get(value, EMPTY_CHANGELIST_VALUE)
@@ -464,6 +475,8 @@ def display_for_field(value, field):
         return formats.number_format(value)
     elif isinstance(field.rel, models.ManyToManyRel):
         return ', '.join([smart_text(obj) for obj in value.all()])
+    elif isinstance(field, ColorField):
+        return collor_field(value)
     else:
         return smart_text(value)
 
