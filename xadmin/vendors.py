@@ -93,6 +93,11 @@ vendors = {
             'dev': 'xadmin/vendor/bootstrap-multiselect/js/bootstrap-multiselect.js',
         }
     },
+    "typeahead": {
+        "js": {
+            'dev': 'xadmin/vendor/bootstrap-typeahead/js/bootstrap-typeahead.js',
+        }
+    },
     "snapjs": {
         "css": {
             'dev': 'xadmin/vendor/snapjs/snap.css',
