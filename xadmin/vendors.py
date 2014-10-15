@@ -106,4 +106,12 @@ vendors = {
             'dev': 'xadmin/vendor/snapjs/snap.js',
         }
     },
+    "spectrum": {
+        "css": {
+            'dev': 'xadmin/vendor/spectrum/spectrum.css',
+        },
+        "js": {
+            'dev': 'xadmin/vendor/spectrum/spectrum.js',
+        }
+    },
 }

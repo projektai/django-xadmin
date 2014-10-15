@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
@@ -69,3 +69,11 @@ msgstr ""
 #: static/xadmin/js/xadmin.widget.datetime.js:43
 msgid "%T"
 msgstr ""
+
+#: static/xadmin/js/xadmin.widget.colorpicker.js:8
+msgid "Cancel"
+msgstr "Atšaukti"
+
+#: static/xadmin/js/xadmin.widget.colorpicker.js:9
+msgid "Choose"
+msgstr "Pasirinkti"

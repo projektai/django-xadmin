@@ -195,3 +195,15 @@ class AdminCommaSeparatedIntegerFieldWidget(forms.TextInput):
             final_attrs.update(attrs)
         super(AdminCommaSeparatedIntegerFieldWidget,
               self).__init__(attrs=final_attrs)
+
+
+class AdminColorPickerWidget(forms.TextInput):
+    @property
+    def media(self):
+        return vendor('spectrum.js','spectrum.css', 'xadmin.widget.colorpicker.js')
+
+    def __init__(self, attrs=None):
+        final_attrs = {'class': 'colorpicker'}
+        if attrs is not None:
+            final_attrs.update(attrs)
+        super(AdminColorPickerWidget, self).__init__(attrs=final_attrs)

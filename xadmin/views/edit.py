@@ -16,10 +16,10 @@ from django.utils.html import escape
 from django.template import loader
 from django.utils.translation import ugettext as _
 from xadmin import widgets
+from xadmin.fields import ColorField
 from xadmin.layout import FormHelper, Layout, Fieldset, TabHolder, Container, Column, Col, Field
 from xadmin.util import unquote
 from xadmin.views.detail import DetailAdminUtil
-
 from xadmin.views.base import ModelAdminView, filter_hook, csrf_protect_m
 
 
@@ -41,6 +41,7 @@ FORMFIELD_FOR_DBFIELD_DEFAULTS = {
     models.ForeignKey: {'widget': widgets.AdminSelectWidget},
     models.OneToOneField: {'widget': widgets.AdminSelectWidget},
     models.ManyToManyField: {'widget': widgets.AdminSelectMultiple},
+    ColorField: {'widget': widgets.AdminColorPickerWidget},
 }
 
 
