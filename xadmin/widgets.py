@@ -200,10 +200,29 @@ class AdminCommaSeparatedIntegerFieldWidget(forms.TextInput):
 class AdminColorPickerWidget(forms.TextInput):
     @property
     def media(self):
-        return vendor('spectrum.js','spectrum.css', 'xadmin.widget.colorpicker.js')
+        return vendor('spectrum.js', 'spectrum.css', 'xadmin.widget.colorpicker.js')
 
     def __init__(self, attrs=None):
         final_attrs = {'class': 'colorpicker'}
         if attrs is not None:
             final_attrs.update(attrs)
         super(AdminColorPickerWidget, self).__init__(attrs=final_attrs)
+
+
+class AdminOpenStreetMapWidget(forms.TextInput):
+    @property
+    def media(self):
+        return vendor('openlayers.js', 'openlayers.css', 'xadmin.widget.openstreetmap.js')
+
+    def __init__(self, attrs=None):
+        final_attrs = {'class': 'openstreetmap'}
+
+        from django.conf import settings
+        if settings.OSM_COORDINATES_ZOOM:
+            final_attrs['zoom'] = settings.OSM_COORDINATES_ZOOM
+        if settings.OSM_COORDINATES_CENTER:
+            final_attrs['center'] = settings.OSM_COORDINATES_CENTER
+
+        if attrs is not None:
+            final_attrs.update(attrs)
+        super(AdminOpenStreetMapWidget, self).__init__(attrs=final_attrs)
