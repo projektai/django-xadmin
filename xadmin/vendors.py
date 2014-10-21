@@ -114,4 +114,12 @@ vendors = {
             'dev': 'xadmin/vendor/spectrum/spectrum.js',
         }
     },
+    "openlayers": {
+        "css": {
+            'dev': 'xadmin/vendor/openlayers/openlayers.css',
+        },
+        "js": {
+            'dev': 'xadmin/vendor/openlayers/OpenLayers.js',
+        }
+    },
 }

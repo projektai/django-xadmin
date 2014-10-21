@@ -16,7 +16,7 @@ from django.utils.html import escape
 from django.template import loader
 from django.utils.translation import ugettext as _
 from xadmin import widgets
-from xadmin.fields import ColorField
+from xadmin.fields import ColorField, CoordinatesField
 from xadmin.layout import FormHelper, Layout, Fieldset, TabHolder, Container, Column, Col, Field
 from xadmin.util import unquote
 from xadmin.views.detail import DetailAdminUtil
@@ -42,6 +42,7 @@ FORMFIELD_FOR_DBFIELD_DEFAULTS = {
     models.OneToOneField: {'widget': widgets.AdminSelectWidget},
     models.ManyToManyField: {'widget': widgets.AdminSelectMultiple},
     ColorField: {'widget': widgets.AdminColorPickerWidget},
+    CoordinatesField: {'widget': widgets.AdminOpenStreetMapWidget},
 }
 
 
