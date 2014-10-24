@@ -4,7 +4,7 @@
     var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 
     var defaultOpts = {
-        zoom   : 13,
+        zoom   : 2,
         center : {lon:0, lat:0}
     };
 
@@ -14,8 +14,8 @@
             return false;
         if (!$.isNumeric(tmp[0]) || !$.isNumeric(tmp[1]))
             return false;
-        var lon = parseFloat(tmp[0]);
-        var lat = parseFloat(tmp[1]);
+        var lat = parseFloat(tmp[0]);
+        var lon = parseFloat(tmp[1]);
         if (Math.abs(lon) > 180 || Math.abs(lat) > 90)
             return false;
         return {lon: lon, lat: lat}
@@ -82,7 +82,7 @@
             }
 
             markerlayer.addMarker(new OpenLayers.Marker(lonlat));
-            field.val(lonlatTransf.lon + ':' + lonlatTransf.lat);
+            field.val(lonlatTransf.lat + ':' + lonlatTransf.lon);
         });
 
         $(this).change(function () {

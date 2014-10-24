@@ -218,9 +218,9 @@ class AdminOpenStreetMapWidget(forms.TextInput):
         final_attrs = {'class': 'openstreetmap'}
 
         from django.conf import settings
-        if settings.OSM_COORDINATES_ZOOM:
+        if hasattr(settings, 'OSM_COORDINATES_ZOOM'):
             final_attrs['zoom'] = settings.OSM_COORDINATES_ZOOM
-        if settings.OSM_COORDINATES_CENTER:
+        if hasattr(settings, 'OSM_COORDINATES_CENTER'):
             final_attrs['center'] = settings.OSM_COORDINATES_CENTER
 
         if attrs is not None:

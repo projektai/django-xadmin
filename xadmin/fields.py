@@ -21,8 +21,8 @@ class CoordinatesField(models.CharField):
         tmp = value.split(':')
         if len(tmp) == 2:
             try:
-                lon = float(tmp[0])
-                lat = float(tmp[1])
+                lat = float(tmp[0])
+                lon = float(tmp[1])
                 if abs(lon) <= 180 and abs(lat) <= 90:
                     is_valid = True
             except ValueError:
