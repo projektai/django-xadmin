@@ -150,10 +150,19 @@ class AdminSelectMultiple(forms.SelectMultiple):
 
 
 class AdminFileWidget(forms.ClearableFileInput):
+    @property
+    def media(self):
+        return vendor('filestyle.js')
+
     template_with_initial = (u'<p class="file-upload">%s</p>'
                              % forms.ClearableFileInput.template_with_initial)
     template_with_clear = (u'<span class="clearable-file-input">%s</span>'
                            % forms.ClearableFileInput.template_with_clear)
+
+    def render(self, name, value, attrs=None):
+        attrs["class"] = "filestyle"
+        attrs["data-icon"] = "false"
+        return super(AdminFileWidget, self).render(name, value, attrs)
 
 
 class AdminTextareaWidget(forms.Textarea):

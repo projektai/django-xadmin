@@ -4,6 +4,7 @@ from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ModelFormAdminView, DetailAdminView, ListAdminView
+from xadmin.widgets import AdminFileWidget
 
 
 def get_gallery_modal():
@@ -35,7 +36,7 @@ class AdminImageField(forms.ImageField):
         return {'label': self.label}
 
 
-class AdminImageWidget(forms.FileInput):
+class AdminImageWidget(AdminFileWidget):
     """
     A ImageField Widget that shows its current value if it has one.
     """

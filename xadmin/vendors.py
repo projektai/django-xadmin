@@ -36,6 +36,12 @@ vendors = {
                            'xadmin/vendor/jquery-ui/jquery.ui.mouse.min.js', 'xadmin/vendor/jquery-ui/jquery.ui.sortable.min.js']
         }
     },
+    "filestyle": {
+        "js": {
+            'dev': 'xadmin/vendor/bootstrap-filestyle/js/bootstrap-filestyle.js',
+            'production': 'xadmin/vendor/bootstrap-filestyle/js/bootstrap-filestyle.min.js',
+        }
+    },
     "font-awesome": {
         "css": {
             'dev': 'xadmin/vendor/font-awesome/css/font-awesome.css',
