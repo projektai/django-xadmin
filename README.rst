@@ -77,9 +77,11 @@ Install Requires
 
 -  pygeocoder ([OPTION] For geocoding addresses)
 
+-  psycopg2 ([OPTION] For PostgreSQL database support)
+
 .. code:: bash
 
-    pip install django django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder
+    pip install django django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder psycopg2
 
 .. _django: http://djangoproject.com
 .. _django-crispy-forms: http://django-crispy-forms.rtfd.org
