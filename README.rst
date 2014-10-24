@@ -75,7 +75,9 @@ Install Requires
 
 -  `xlsxwriter`_ ([OPTION] For export xlsx files)
 
--  `pygeocoder`_ ([OPTION] For geocoding addresses)
+-  pygeocoder ([OPTION] For geocoding addresses)
+
+    pip install django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder
 
 .. _django: http://djangoproject.com
 .. _django-crispy-forms: http://django-crispy-forms.rtfd.org
