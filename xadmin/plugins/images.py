@@ -2,10 +2,13 @@ from django.db import models
 from django import forms
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
+from xadmin.fields import ImageWithThumbField
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ModelFormAdminView, DetailAdminView, ListAdminView
 from xadmin.widgets import AdminFileWidget
 
+
+IMAGE_FORMAT_STR = """<a href="%s" target="_blank" title="%s" data-gallery="gallery" data-download="%s"><img src="%s" class="field_img"/></a>"""
 
 def get_gallery_modal():
     return """
@@ -30,6 +33,18 @@ def get_gallery_modal():
     """ % (_('Previous'), _('Next'), _('Slideshow'), _('Download'))
 
 
+def get_image_urls(image, field):
+    if isinstance(field, ImageWithThumbField):
+        small = field.get_small(image)
+        medium = field.get_medium(image)
+        small_url = small.url
+        medium_url = medium.url
+    else:
+        small_url = image.url
+        medium_url = image.url
+    return small_url, medium_url
+
+
 class AdminImageField(forms.ImageField):
 
     def widget_attrs(self, widget):
@@ -47,8 +62,9 @@ class AdminImageWidget(AdminFileWidget):
         output = []
         if value and hasattr(value, "url"):
             label = self.attrs.get('label', name)
-            output.append('<a href="%s" target="_blank" title="%s" data-gallery="gallery"><img src="%s" class="field_img"/></a><br/>%s ' %
-                         (value.url, label, value.url, _('Change:')))
+            small_url, medium_url = get_image_urls(value, value.field)
+            output.append(IMAGE_FORMAT_STR %
+                         (medium_url, label, value.url, small_url))
         output.append(super(AdminImageWidget, self).render(name, value, attrs))
         return mark_safe(u''.join(output))
 
@@ -70,7 +86,8 @@ class ModelDetailPlugin(BaseAdminPlugin):
         if isinstance(result.field, models.ImageField):
             if result.value:
                 img = getattr(result.obj, field_name)
-                result.text = mark_safe('<a href="%s" target="_blank" title="%s" data-gallery="gallery"><img src="%s" class="field_img"/></a>' % (img.url, result.label, img.url))
+                small_url, medium_url = get_image_urls(img, result.field)
+                result.text = mark_safe(IMAGE_FORMAT_STR % (medium_url, result.label, img.url, small_url))
                 self.include_image = True
         return result
 

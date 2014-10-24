@@ -20,6 +20,7 @@ setup(
         'setuptools',
         'django>=1.5',
         'django-crispy-forms>=1.4.0',
+        'sorl-thumbnail>=11.12.1b',
     ],
     extras_require={
         'Excel': ['xlwt', 'xlsxwriter'],
