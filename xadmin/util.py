@@ -453,9 +453,23 @@ def collor_field(field_val):
     """
     return mark_safe(format_str % field_val)
 
-def display_for_field(value, field):
+
+def image_field(image, field, **kwargs):
+    if image:
+        if 'show_thumb' in kwargs and kwargs['show_thumb']:
+            label = label_for_field(field.name, field.model)
+            small = field.get_small(image)
+            medium = field.get_medium(image)
+            format_str = """
+            <a href="%s" target="_blank" title="%s" data-gallery="gallery" data-download="%s"><img src="%s" class="field_img"/></a>
+            """
+            return mark_safe(format_str % (medium.url, label, image.url, small.url))
+    return smart_text(image)
+
+
+def display_for_field(value, field , **kwargs):
     from xadmin.views.list import EMPTY_CHANGELIST_VALUE
-    from xadmin.fields import ColorField
+    from xadmin.fields import ColorField, ImageWithThumbField
 
     if field.flatchoices:
         return dict(field.flatchoices).get(value, EMPTY_CHANGELIST_VALUE)
@@ -477,6 +491,8 @@ def display_for_field(value, field):
         return ', '.join([smart_text(obj) for obj in value.all()])
     elif isinstance(field, ColorField):
         return collor_field(value)
+    elif isinstance(field, ImageWithThumbField):
+        return image_field(value, field, **kwargs)
     else:
         return smart_text(value)
 

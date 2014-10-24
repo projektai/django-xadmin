@@ -109,6 +109,7 @@ class ListAdminView(ModelAdminView):
     list_per_page = 50
     list_max_show_all = 200
     list_exclude = ()
+    list_thumb_fields = []
     search_fields = ()
     paginator_class = Paginator
     ordering = None
@@ -557,7 +558,10 @@ class ListAdminView(ModelAdminView):
                     else:
                         item.text = field_val
                 else:
-                    item.text = display_for_field(value, f)
+                    if f.name in self.list_thumb_fields:
+                        item.text = display_for_field(value, f, show_thumb=True)
+                    else:
+                        item.text = display_for_field(value, f)
                 if isinstance(f, models.DateField)\
                     or isinstance(f, models.TimeField)\
                         or isinstance(f, models.ForeignKey):
