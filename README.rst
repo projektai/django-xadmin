@@ -79,9 +79,11 @@ Install Requires
 
 -  psycopg2 ([OPTION] For PostgreSQL database support)
 
+-  sorl-thumbnail ([OPTION] For generating thumbnails)
+
 .. code:: bash
 
-    pip install django django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder psycopg2
+    pip install django django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder psycopg2 sorl-thumbnail
 
 .. _django: http://djangoproject.com
 .. _django-crispy-forms: http://django-crispy-forms.rtfd.org
