@@ -208,7 +208,7 @@ class CharFieldListFilter(FieldFilter):
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
-        return (isinstance(field, models.CharField) and field.max_length > 10  and field.max_length < 101)
+        return (isinstance(field, models.CharField) and field.max_length > 10)
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         super(CharFieldListFilter, self).__init__(
@@ -236,7 +236,7 @@ class TextFieldListFilter(FieldFilter):
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
-        return (isinstance(field, models.CharField) and field.max_length > 100) or isinstance(field, models.TextField)
+        return isinstance(field, models.TextField)
 
 
 @manager.register
