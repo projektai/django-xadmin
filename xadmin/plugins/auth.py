@@ -1,5 +1,6 @@
 # coding=utf-8
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (UserCreationForm, UserChangeForm,
                                        AdminPasswordChangeForm, PasswordChangeForm)
 from django.contrib.auth.models import Group, Permission
@@ -251,7 +252,9 @@ class ChangeAccountPasswordView(ChangePasswordView):
         else:
             return self.get_response()
 
-site.register_view(r'^auth/user/(.+)/update/password/$',
+user_model = get_user_model()
+
+site.register_view(r'^%s/%s/(.+)/update/password/$' % (user_model._meta.app_label, user_model._meta.model_name),
                    ChangePasswordView, name='user_change_password')
 site.register_view(r'^account/password/$', ChangeAccountPasswordView,
                    name='account_password')
