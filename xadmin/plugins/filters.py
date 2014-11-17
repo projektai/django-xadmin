@@ -27,6 +27,7 @@ class IncorrectLookupParameters(Exception):
 class FilterPlugin(BaseAdminPlugin):
     list_filter = ()
     search_fields = ()
+    ajax_search_fields = ()
     free_query_filter = True
 
     def lookup_allowed(self, lookup, value):
@@ -170,6 +171,9 @@ class FilterPlugin(BaseAdminPlugin):
                 return "%s__search" % field_name[1:]
             else:
                 return "%s__icontains" % field_name
+
+        if self.request.is_ajax() and self.ajax_search_fields:
+            self.search_fields = self.ajax_search_fields
 
         if self.search_fields and query:
             orm_lookups = [construct_search(str(search_field))
