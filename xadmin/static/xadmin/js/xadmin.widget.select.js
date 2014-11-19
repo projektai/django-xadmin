@@ -7,6 +7,7 @@
             f.find('.select-search').each(function(){
                 var $el = $(this);
                 $el.select2({
+                    allowClear: (typeof($el.attr("required")) === 'undefined'),
                     minimumInputLength: 1,
                     initSelection: function(elem, callback){
                         callback({id: elem.val(), '__str__': $el.data('label')});
@@ -36,6 +37,7 @@
             f.find('.select-search').each(function(){
                 var $el = $(this);
                 $el.select2({
+                    allowClear: (typeof($el.attr("required")) === 'undefined'),
                     minimumInputLength: 1,
                     initSelection: function(elem, callback){
                         callback({id: elem.val(), '__str__': $el.data('label')});
@@ -61,4 +63,3 @@
         }});
     }
 })(jQuery)
-
