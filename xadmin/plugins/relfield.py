@@ -59,7 +59,11 @@ class RelateFieldPlugin(BaseAdminPlugin):
             if (db_field.rel.to in self.admin_view.admin_site._registry) and \
                     self.has_model_perm(db_field.rel.to, 'view'):
                 db = kwargs.get('using')
-                return dict(attrs or {}, widget=ForeignKeySearchWidget(db_field.rel, self.admin_view, using=db))
+                attrs = {}
+                if not db_field.blank:
+                    attrs['required'] = 'required'
+
+                return dict(attrs or {}, widget=ForeignKeySearchWidget(db_field.rel, self.admin_view, attrs, using=db))
         return attrs
 
 site.register_plugin(RelateFieldPlugin, ModelFormAdminView)
