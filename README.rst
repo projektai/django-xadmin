@@ -59,10 +59,7 @@ Xadmin is best installed via PyPI. To install the latest version, run:
 Install from github source:
 
 .. code:: bash
-   on fedora:
-    yum install -y libjpeg-devel
-   on ubuntu:
-    apt-get install libjpeg-dev
+
     pip install git+git://github.com/projektai/django-xadmin
 
 Install Requires 
@@ -85,7 +82,10 @@ Install Requires
 -  sorl-thumbnail ([OPTION] For generating thumbnails)
 
 .. code:: bash
-
+   on fedora:
+    yum install -y libjpeg-devel
+   on ubuntu:
+    apt-get install libjpeg-dev
     pip install django django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder psycopg2 sorl-thumbnail
 
 .. _django: http://djangoproject.com
