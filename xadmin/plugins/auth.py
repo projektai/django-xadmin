@@ -42,6 +42,20 @@ class PermissionModelMultipleChoiceField(ModelMultipleChoiceField):
         return get_permission_name(p)
 
 
+class CustomUserCreationForm(UserCreationForm):
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        UserModel = get_user_model()
+        try:
+            UserModel._default_manager.get(username=username)
+        except UserModel.DoesNotExist:
+            return username
+        raise forms.ValidationError(
+            self.error_messages['duplicate_username'],
+            code='duplicate_username',
+        )
+
+
 class GroupAdmin(object):
     search_fields = ('name',)
     ordering = ('name',)
@@ -73,7 +87,7 @@ class UserAdmin(object):
 
     def get_model_form(self, **kwargs):
         if self.org_obj is None:
-            self.form = UserCreationForm
+            self.form = CustomUserCreationForm
         else:
             self.form = UserChangeForm
         return super(UserAdmin, self).get_model_form(**kwargs)
