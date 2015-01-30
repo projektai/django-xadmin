@@ -3,7 +3,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.db.models.query import QuerySet
-from django.db.models.related import RelatedObject
+
+from django import get_version
+v = get_version()
+if v[:3] > '1.7':
+    from django.db.models.fields.related import ForeignObjectRel
+else:
+    from django.db.models.related import RelatedObject as ForeignObjectRel
 from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -346,7 +352,7 @@ class RevisionListView(BaseReversionView):
         obj_b, detail_b = self.get_version_object(version_b)
 
         for f in (self.opts.fields + self.opts.many_to_many):
-            if isinstance(f, RelatedObject):
+            if isinstance(f, ForeignObjectRel):
                 label = f.opts.verbose_name
             else:
                 label = f.verbose_name

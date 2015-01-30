@@ -2,12 +2,30 @@ import xadmin
 
 from xadmin.layout import *
 from xadmin.util import username_field
-
 from django.conf import settings
-from django.contrib.comments.models import Comment
 from django.utils.translation import ugettext_lazy as _, ungettext
-from django.contrib.comments import get_model
-from django.contrib.comments.views.moderation import perform_flag, perform_approve, perform_delete
+
+from django import get_version
+v = get_version()
+if v[:3] > '1.7':
+    COMMENT_MODEL = 'django_comments'
+    try:
+        from django_comments.models import Comment
+        from django_comments import get_model
+        from django_comments.views.moderation import perform_flag, perform_approve, perform_delete
+    except:
+        def perform_flag(request, comment):
+            pass
+        def perform_approve(request, comment):
+            pass
+        def perform_delete(request, comment):
+            pass
+else:
+    COMMENT_MODEL = 'django.contrib.comments'
+    from django.contrib.comments.models import Comment
+    from django.contrib.comments import get_model
+    from django.contrib.comments.views.moderation import perform_flag, perform_approve, perform_delete
+
 
 class UsernameSearch(object):
     """The User object may not be auth.User, so we need to provide
@@ -90,5 +108,5 @@ class CommentsAdmin(object):
 
 # Only register the default admin if the model is the built-in comment model
 # (this won't be true if there's a custom comment app).
-if 'django.contrib.comments' in settings.INSTALLED_APPS and (get_model() is Comment):
+if COMMENT_MODEL in settings.INSTALLED_APPS and (get_model() is Comment):
     xadmin.site.register(Comment, CommentsAdmin)

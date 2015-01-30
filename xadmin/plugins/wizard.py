@@ -2,9 +2,20 @@ import re
 from django import forms
 from django.db import models
 from django.template import loader
-from django.contrib.formtools.wizard.storage import get_storage
-from django.contrib.formtools.wizard.forms import ManagementForm
-from django.contrib.formtools.wizard.views import StepsHelper
+
+from django import get_version
+v = get_version()
+if v[:3] > '1.7':
+    from formtools.wizard.storage import get_storage
+    from formtools.wizard.forms import ManagementForm
+    from formtools.wizard.views import StepsHelper
+    STORAGE_NAME = 'formtools.wizard.storage.session.SessionStorage'
+else:
+    from django.contrib.formtools.wizard.storage import get_storage
+    from django.contrib.formtools.wizard.forms import ManagementForm
+    from django.contrib.formtools.wizard.views import StepsHelper
+    STORAGE_NAME = 'django.contrib.formtools.wizard.storage.session.SessionStorage'
+
 from django.utils.datastructures import SortedDict
 from django.forms import ValidationError
 from django.forms.models import modelform_factory
@@ -22,7 +33,7 @@ class WizardFormPlugin(BaseAdminPlugin):
     wizard_form_list = None
     wizard_for_update = False
 
-    storage_name = 'django.contrib.formtools.wizard.storage.session.SessionStorage'
+    storage_name = STORAGE_NAME
     form_list = None
     initial_dict = None
     instance_dict = None

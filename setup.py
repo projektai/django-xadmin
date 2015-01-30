@@ -18,13 +18,15 @@ setup(
     include_package_data=True,
     install_requires=[
         'setuptools',
-        'django>=1.5',
+        'django>=1.7',
         'django-crispy-forms>=1.4.0',
+        'django-formtools>=1.0',
         'sorl-thumbnail>=11.12.1b',
     ],
     extras_require={
         'Excel': ['xlwt', 'xlsxwriter'],
         'Reversion': ['django-reversion'],
+        'Comment': ['django-contrib-comments'],
     },
     zip_safe=False,
     keywords=['admin', 'django', 'xadmin', 'bootstrap'],

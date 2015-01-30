@@ -1,4 +1,11 @@
 from django.db import models
+
+from django import get_version
+v = get_version()
+if v[:3] > '1.7':
+    from django.db.models.fields.related import ForeignObjectRel
+else:
+    from django.db.models.related import RelatedObject as ForeignObjectRel
 from django.core.exceptions import ImproperlyConfigured
 import sys
 if sys.version_info.major < 3:
@@ -215,7 +222,7 @@ class CharFieldListFilter(FieldFilter):
             field, request, params, model, model_admin, field_path)
 
         self.search_url = model_admin.get_admin_url('%s_%s_autocomplete' % (
-            field.model._meta.app_label, field.model._meta.module_name), field.name)
+            field.model._meta.app_label, field.model._meta.model_name), field.name)
 
         if hasattr(field, 'verbose_name'):
             self.lookup_title = field.verbose_name
@@ -342,7 +349,7 @@ class RelatedFieldSearchFilter(FieldFilter):
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
-        if not (hasattr(field, 'rel') and bool(field.rel) or isinstance(field, models.related.RelatedObject)):
+        if not (hasattr(field, 'rel') and bool(field.rel) or isinstance(field, ForeignObjectRel)):
             return False
         related_modeladmin = admin_view.admin_site._registry.get(
             get_model_from_relation(field))
@@ -393,7 +400,7 @@ class RelatedFieldListFilter(ListFieldFilter):
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
-        return (hasattr(field, 'rel') and bool(field.rel) or isinstance(field, models.related.RelatedObject))
+        return (hasattr(field, 'rel') and bool(field.rel) or isinstance(field, ForeignObjectRel))
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         other_model = get_model_from_relation(field)
@@ -415,7 +422,7 @@ class RelatedFieldListFilter(ListFieldFilter):
         self.title = self.lookup_title
 
     def has_output(self):
-        if (isinstance(self.field, models.related.RelatedObject)
+        if (isinstance(self.field, ForeignObjectRel)
                 and self.field.field.null or hasattr(self.field, 'rel')
                 and self.field.null):
             extra = 1
@@ -441,7 +448,7 @@ class RelatedFieldListFilter(ListFieldFilter):
                 }, [self.lookup_isnull_name]),
                 'display': val,
             }
-        if (isinstance(self.field, models.related.RelatedObject)
+        if (isinstance(self.field, ForeignObjectRel)
                 and self.field.field.null or hasattr(self.field, 'rel')
                 and self.field.null):
             yield {
