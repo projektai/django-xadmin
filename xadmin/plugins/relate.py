@@ -10,7 +10,13 @@ else:
 
 from django.utils.safestring import mark_safe
 from django.db.models.sql.query import LOOKUP_SEP
-from django.db.models.related import RelatedObject
+
+from django import get_version
+v = get_version()
+if v[:3] > '1.7':
+    from django.db.models.fields.related import ForeignObjectRel
+else:
+    from django.db.models.related import RelatedObject as ForeignObjectRel
 from django.utils.translation import ugettext as _
 from django.db import models
 
@@ -33,10 +39,10 @@ class RelateMenuPlugin(BaseAdminPlugin):
         for r in self.opts.get_all_related_objects() + self.opts.get_all_related_many_to_many_objects():
             if self.related_list and (r.get_accessor_name() not in self.related_list):
                 continue
-            if r.model not in self.admin_site._registry.keys():
+            if r.related_model not in self.admin_site._registry.keys():
                 continue
-            has_view_perm = self.has_model_perm(r.model, 'view')
-            has_add_perm = self.has_model_perm(r.model, 'add')
+            has_view_perm = self.has_model_perm(r.related_model, 'view')
+            has_add_perm = self.has_model_perm(r.related_model, 'add')
             if not (has_view_perm or has_add_perm):
                 continue
 
@@ -101,7 +107,7 @@ class RelateObject(object):
         parts = lookup.split(LOOKUP_SEP)
         field = self.opts.get_field_by_name(parts[0])[0]
 
-        if not hasattr(field, 'rel') and not isinstance(field, RelatedObject):
+        if not hasattr(field, 'rel') and not isinstance(field, ForeignObjectRel):
             raise Exception(u'Relate Lookup field must a related field')
 
         if hasattr(field, 'rel'):

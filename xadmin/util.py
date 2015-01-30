@@ -2,7 +2,13 @@ import django
 from django.db import models
 from django.db.models.sql.query import LOOKUP_SEP
 from django.db.models.deletion import Collector
-from django.db.models.related import RelatedObject
+
+from django import get_version
+v = get_version()
+if v[:3] > '1.7':
+    from django.db.models.fields.related import ForeignObjectRel
+else:
+    from django.db.models.related import RelatedObject as ForeignObjectRel
 from django.forms.forms import pretty_name
 from django.utils import formats
 from django.utils.html import escape
@@ -20,6 +26,7 @@ from django.forms import Media
 from django.utils.translation import get_language
 import datetime
 import decimal
+
 
 if 'django.contrib.staticfiles' in settings.INSTALLED_APPS:
     from django.contrib.staticfiles.templatetags.staticfiles import static
@@ -110,7 +117,7 @@ def lookup_needs_distinct(opts, lookup_path):
         field = opts.get_field_by_name(str(field_name, 'utf-8'))[0]
     if ((hasattr(field, 'rel') and
          isinstance(field.rel, models.ManyToManyRel)) or
-        (isinstance(field, models.related.RelatedObject) and
+        (isinstance(field, ForeignObjectRel) and
          not field.field.unique)):
         return True
     return False
@@ -369,7 +376,7 @@ def label_for_field(name, model, model_admin=None, return_attr=False):
     attr = None
     try:
         field = model._meta.get_field_by_name(name)[0]
-        if isinstance(field, RelatedObject):
+        if isinstance(field, ForeignObjectRel):
             label = field.opts.verbose_name
         else:
             label = field.verbose_name
@@ -391,7 +398,7 @@ def label_for_field(name, model, model_admin=None, return_attr=False):
                 parts = name.split("__")
                 rel_name,name = parts[0],"__".join(parts[1:])
                 field = model._meta.get_field_by_name(rel_name)[0]
-                if isinstance(field, RelatedObject):
+                if isinstance(field, ForeignObjectRel):
                     label = field.opts.verbose_name
                 else:
                     label = field.verbose_name
@@ -519,7 +526,7 @@ class NotRelationField(Exception):
 
 
 def get_model_from_relation(field):
-    if isinstance(field, models.related.RelatedObject):
+    if isinstance(field, ForeignObjectRel):
         return field.model
     elif getattr(field, 'rel'):  # or isinstance?
         return field.rel.to
