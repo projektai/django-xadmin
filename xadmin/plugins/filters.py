@@ -2,6 +2,7 @@ import operator
 from xadmin import widgets
 
 from xadmin.util import get_fields_from_path, lookup_needs_distinct
+from django.conf import settings
 from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured, ValidationError
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
@@ -169,14 +170,18 @@ class FilterPlugin(BaseAdminPlugin):
 
         # Apply keyword searches.
         def construct_search(field_name):
-            if field_name.startswith('^'):
-                return "%s__istartswith" % field_name[1:]
-            elif field_name.startswith('='):
-                return "%s__iexact" % field_name[1:]
-            elif field_name.startswith('@'):
-                return "%s__search" % field_name[1:]
+            if 'django.contrib.postgres' in settings.INSTALLED_APPS:
+                key = '__unaccent'
             else:
-                return "%s__icontains" % field_name
+                key = ''
+            if field_name.startswith('^'):
+                return "%s%s__istartswith" % (field_name[1:], key)
+            elif field_name.startswith('='):
+                return "%s%s__iexact" % (field_name[1:], key)
+            elif field_name.startswith('@'):
+                return "%s%s__search" % (field_name[1:], key)
+            else:
+                return "%s%s__icontains" % (field_name, key)
 
         if self.request.is_ajax() and self.ajax_search_fields:
             self.search_fields = self.ajax_search_fields
