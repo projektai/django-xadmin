@@ -170,10 +170,12 @@ class FilterPlugin(BaseAdminPlugin):
 
         # Apply keyword searches.
         def construct_search(field_name):
+            key = ''
             if 'django.contrib.postgres' in settings.INSTALLED_APPS:
-                key = '__unaccent'
-            else:
-                key = ''
+                field_type = self.model._meta.get_field(field_name).get_internal_type()
+                if field_type in ['CharField', 'TextField', ]:
+                    key = '__unaccent'
+
             if field_name.startswith('^'):
                 return "%s%s__istartswith" % (field_name[1:], key)
             elif field_name.startswith('='):
