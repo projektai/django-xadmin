@@ -606,8 +606,13 @@ class AutocompleteView(BaseAdminView):
         field = kwargs['field']
 
         if query:
-            qargs = { field+'__startswith': query, }
-            queryset = self.model._default_manager.filter( **qargs ).values(field).distinct()
+            if 'django.contrib.postgres' in settings.INSTALLED_APPS:
+                key = '__unaccent'
+            else:
+                key = ''
+
+            qargs = { '%s%s__startswith' % (field, key): query, }
+            queryset = self.model._default_manager.filter( **qargs ).values(field) #.distinct()
             content = {'options': [v[field] for v in queryset[:self.MAX_HINTS]], }
         else:
             content = []

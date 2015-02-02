@@ -16,6 +16,11 @@ vendors = {
                 'production': 'xadmin/vendor/bootstrap/bootstrap-responsive.css'
             }}
     },
+    "diacritics": {
+        "js": {
+            'dev': 'xadmin/vendor/diacritics/diacritics.js',
+        }
+    },
     'jquery': {
         "js": {
             'dev': 'xadmin/vendor/jquery/jquery.js',

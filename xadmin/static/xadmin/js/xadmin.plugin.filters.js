@@ -67,6 +67,9 @@
                 return typeof json.options == 'undefined' ? false : process(json.options);
             }
           });
+        },
+        matcher: function(item) {
+          return ~removeDiacritics(item.toLowerCase()).indexOf(removeDiacritics(this.query.toLowerCase()))
         }
       });
     });
