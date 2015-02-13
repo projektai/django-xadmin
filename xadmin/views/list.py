@@ -194,6 +194,8 @@ class ListAdminView(ModelAdminView):
         if (self.show_all and self.can_show_all) or not self.multi_page:
             self.result_list = self.list_queryset._clone()
         else:
+            if self.page_num >= self.paginator.num_pages:
+                self.page_num = 0
             try:
                 self.result_list = self.paginator.page(
                     self.page_num + 1).object_list
