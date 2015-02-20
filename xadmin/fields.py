@@ -23,7 +23,7 @@ class ImageWithThumbField(ImageField):
         if thumb_options:
             for size in THUMB_DEFAULT_OPTIONS:
                 if size in thumb_options:
-                    self.thumb_options[size].update(thumb_options[size])
+                    self.thumb_options[size] = thumb_options[size].copy()
 
         super(ImageWithThumbField, self).__init__(verbose_name, name, **kwargs)
 
