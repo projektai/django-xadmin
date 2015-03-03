@@ -294,10 +294,7 @@ class AdminSite(object):
             return update_wrapper(wrapper, view)
 
         # Admin-site-wide views.
-        urlpatterns = patterns('',
-                               url(r'^jsi18n/$', wrap(self.i18n_javascript,
-                                                      cacheable=True), name='jsi18n')
-                               )
+        urlpatterns = patterns('', url(r'^jsi18n/$', self.i18n_javascript, name='jsi18n'))
 
         # Registed admin views
         urlpatterns += patterns('',
