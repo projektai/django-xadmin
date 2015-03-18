@@ -31,28 +31,24 @@
         </div>
       </div>
     </li>
-    <li class="dropdown-submenu menu-date-range{% if choice_since_until_selected %} active{% endif %}"><a>{% trans "Date Range" %}</a>
-      <div class="popover bottom">
+    <li class="dropdown-submenu menu-datetime-range{% if choice_since_until_selected %} active{% endif %}">
+      <a>{% trans "Date Range" %}</a>
+      <div class="popover right">
         <div class="arrow"></div>
-        <div class="popover-content row">
-        <form method="get" action="" class="clearfix">
-          <div class="ranges col-sm-3 hide-xs">
-            <fieldset class="range_inputs">
-              <h4>{% trans "Select Date" %}</h4>
-              <label for="{{since_name}}">{% trans "From" %}</label>
-              <input class="form-control start_input" type="text" name="{{since_name}}" value="{{since_val}}" />
-              <label for="{{until_name}}">{% trans "To" %}</label>
-              <input class="form-control end_input" type="text" name="{{until_name}}" value="{{until_val}}" />
-              <button type="submit" class="btn btn-success btn-block">{% trans "Apply" %}</button>
-            </fieldset>
+        <h3 class="popover-title">{% trans "Select Date And Time" %}</h3>
+        <div class="popover-content">
+        <form method="get" action="" class="form-inline">
+          <div class="input-group datetimepicker">
+            <span class="input-group-addon title">{% trans "From" %}</span>
+            <input type="text" class="form-control start_input" name="{{since_name}}" value="{{since_val}}" />
+            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
           </div>
-          <div class="col-sm-9">
-            <div class="calendar date-start col-sm-6" data-date="{{since_val}}"></div>
-            <div class="calendar date-end col-sm-6" data-date="{{until_val}}"></div>
+          <div class="input-group datetimepicker">
+            <span class="input-group-addon title">{% trans "To" %}</span>
+            <input type="text" class="form-control end_input" name="{{until_name}}" value="{{until_val}}" />
+            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
           </div>
-          <div class="col-xs-12">
-            <button type="submit" class="btn btn-success btn-block show-xs">{% trans "Apply" %}</button>
-          </div>
+          <button type="submit" class="btn btn-success btn-block">{% trans "Apply" %}</button>
           {{ form_params|safe }}
         </form>
         </div>

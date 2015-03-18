@@ -213,6 +213,7 @@ class FilterPlugin(BaseAdminPlugin):
             media = media + self.vendor('diacritics.js', 'typeahead.js')
         if bool(filter(lambda s: isinstance(s, DateFieldListFilter), self.filter_specs)):
             media = media + self.vendor('datepicker.css', 'datepicker.js',
+                                        'moment.js', 'datetimepicker.css', 'datetimepicker.js',
                                         'xadmin.widget.datetime.js')
         if bool(filter(lambda s: isinstance(s, RelatedFieldSearchFilter), self.filter_specs)):
             media = media + self.vendor(

@@ -1,4 +1,4 @@
-
+from django.utils.translation import get_language
 vendors = {
     "bootstrap": {
         'js': {
@@ -69,6 +69,19 @@ vendors = {
         },
         "js": {
             'dev': 'xadmin/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js',
+        }
+    },
+    "datetimepicker": {
+        "css": {
+            'dev': 'xadmin/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css'
+        },
+        "js": {
+            'dev': 'xadmin/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
+        }
+    },
+    "moment": {
+        "js": {
+            'dev': ['xadmin/vendor/moment/js/moment.js', 'xadmin/vendor/moment/js/locale/%s.js' % get_language()],
         }
     },
     "flot": {

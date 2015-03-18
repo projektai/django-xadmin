@@ -275,7 +275,7 @@ class DateFieldListFilter(ListFieldFilter):
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
-        return isinstance(field, models.DateField)
+        return isinstance(field, models.DateField) and not isinstance(field, models.DateTimeField)
 
     def __init__(self, field, request, params, model, admin_view, field_path):
         self.field_generic = '%s__' % field_path
@@ -331,6 +331,7 @@ class DateFieldListFilter(ListFieldFilter):
         context = super(DateFieldListFilter, self).get_context()
         context['choice_selected'] = bool(self.lookup_year_val) or bool(self.lookup_month_val) \
             or bool(self.lookup_day_val)
+        context['choice_since_until_selected'] = bool(self.lookup_since_val) or bool(self.lookup_until_val)
         return context
 
     def choices(self):
@@ -341,6 +342,15 @@ class DateFieldListFilter(ListFieldFilter):
                 param_dict, [FILTER_PREFIX + self.field_generic]),
                 'display': title,
             }
+
+
+@manager.register
+class DateTimeFieldListFilter(DateFieldListFilter):
+    template = 'xadmin/filters/datetime.html'
+
+    @classmethod
+    def test(cls, field, request, params, model, admin_view, field_path):
+        return isinstance(field, models.DateTimeField)
 
 
 @manager.register
