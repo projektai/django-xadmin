@@ -893,6 +893,10 @@ msgstr "Datos intervalas"
 msgid "Select Date"
 msgstr "Pasirinkite datą"
 
+#: templates/xadmin/filters/datetime.html:38
+msgid "Select Date And Time"
+msgstr "Pasirinkite datą ir laiką"
+
 #: templates/xadmin/filters/date.html:42
 msgid "From"
 msgstr "Nuo"

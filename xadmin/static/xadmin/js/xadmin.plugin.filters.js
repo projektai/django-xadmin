@@ -53,6 +53,16 @@
       checkAvailable();
     });
 
+    $('.menu-datetime-range form').each(function(){
+      var el = $(this);
+      // TODO: checkAvailable ?
+      var start_input = el.find('.start_input');
+      var end_input = el.find('.end_input');
+
+      $('.datetimepicker').datetimepicker();
+
+    });
+
     $('.typeahead-char').each(function(){
       var search_url = $(this).attr('data-search-url');
       $(this).typeahead({
