@@ -87,7 +87,7 @@ Install Requires
     yum install -y libjpeg-devel
     on ubuntu:
     apt-get install libjpeg-dev
-    pip install django django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder psycopg2 sorl-thumbnail
+    pip install django git+git://github.com/projektai/django-crispy-forms django-reversion  xlwt-future xlsxwriter pygeocoder psycopg2 sorl-thumbnail
 
 
 .. _django: http://djangoproject.com
