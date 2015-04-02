@@ -77,3 +77,11 @@ msgstr "Atšaukti"
 #: static/xadmin/js/xadmin.widget.colorpicker.js:9
 msgid "Choose"
 msgstr "Pasirinkti"
+
+#: static/xadmin/js/xadmin.plugin.quick-form.js:172
+msgid "Close"
+msgstr "Uždaryti"
+
+#: static/xadmin/js/xadmin.plugin.quick-form.js:173
+msgid "Add"
+msgstr "Pridėti"
