@@ -191,7 +191,7 @@ class ListAdminView(ModelAdminView):
         self.multi_page = self.result_count > self.list_per_page
 
         # Get the list of objects to display on this page.
-        if (self.show_all and self.can_show_all) or not self.multi_page:
+        if self.list_per_page == 0 or (self.show_all and self.can_show_all) or not self.multi_page:
             self.result_list = self.list_queryset._clone()
         else:
             if self.page_num >= self.paginator.num_pages:
