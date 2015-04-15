@@ -31,6 +31,8 @@ class ImageWithThumbField(ImageField):
         return self._get_thumb(instance, 'small')
 
     def get_medium(self, instance):
+        if 'show_original' in self.thumb_options['medium'] and self.thumb_options['medium']['show_original']:
+            return instance
         return self._get_thumb(instance, 'medium')
 
     def _get_thumb(self, instance, size):
