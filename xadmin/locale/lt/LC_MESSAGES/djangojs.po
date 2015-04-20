@@ -78,9 +78,14 @@ msgstr "Atšaukti"
 msgid "Choose"
 msgstr "Pasirinkti"
 
+#: static/xadmin/js/xadmin.plugin.details.js:24
 #: static/xadmin/js/xadmin.plugin.quick-form.js:172
 msgid "Close"
 msgstr "Uždaryti"
+
+#: static/xadmin/js/xadmin.plugin.details.js:25
+msgid "Edit"
+msgstr "Redaguoti"
 
 #: static/xadmin/js/xadmin.plugin.quick-form.js:173
 msgid "Add"
