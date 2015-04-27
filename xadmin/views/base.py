@@ -621,3 +621,43 @@ class AutocompleteView(BaseAdminView):
         response.write(
             json.dumps(content, cls=JSONEncoder, ensure_ascii=False))
         return response
+
+
+class InMapView(BaseAdminView):
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        self.request_method = request.method.lower()
+
+    def get(self, request, *args, **kwargs):
+        from django.contrib.gis import geos
+
+        field = kwargs['field']
+        x1 = request.GET.get('x1', None)
+        y1 = request.GET.get('y1', None)
+        x2 = request.GET.get('x2', None)
+        y2 = request.GET.get('y2', None)
+        content = []
+
+        bbox = (x1, y1, x2, y2)
+        geom = geos.Polygon.from_bbox(bbox)
+        qargs = { '%s__intersects' % field: geom, }
+        queryset = self.model.gis.filter( **qargs )
+        name_for_map = self.model._meta.get_field(field).name_for_map
+        for item in queryset:
+            location = getattr(item, field)
+            data = {'lon': location.coords[0], 'lat': location.coords[1], 'name': item.name};
+            if name_for_map:
+                name_for_map_value = getattr(item, name_for_map)
+                if callable(name_for_map_value):
+                    data['name'] = name_for_map_value()
+                else:
+                    data['name'] = name_for_map_value
+            else:
+                data['name'] = ''
+            content.append(data);
+
+        response = HttpResponse(content_type="application/json; charset=UTF-8")
+        response.write(
+            json.dumps(content, cls=JSONEncoder, ensure_ascii=False))
+        return response

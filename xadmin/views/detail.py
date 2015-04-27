@@ -101,7 +101,7 @@ class ResultField(object):
                 if isinstance(f.rel, models.ManyToOneRel):
                     self.text = getattr(self.obj, f.name)
                 else:
-                    self.text = display_for_field(value, f)
+                    self.text = display_for_field(value, f, model_admin=self.admin_view)
             self.field = f
             self.attr = attr
             self.value = value
