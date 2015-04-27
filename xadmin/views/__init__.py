@@ -1,6 +1,8 @@
 
 from xadmin.views.base import BaseAdminPlugin, BaseAdminView, CommAdminView, \
-    ModelAdminView, filter_hook, csrf_protect_m, BaseAdminObject, AutocompleteView
+    ModelAdminView, filter_hook, csrf_protect_m, BaseAdminObject, \
+    AutocompleteView, InMapView
+
 
 from xadmin.views.list import ListAdminView
 from xadmin.views.edit import CreateAdminView, UpdateAdminView, ModelFormAdminView
@@ -14,7 +16,7 @@ __all__ = (
     'BaseAdminObject',
     'BaseAdminPlugin', 'BaseAdminView', 'CommAdminView', 'ModelAdminView', 'ListAdminView',
     'ModelFormAdminView', 'CreateAdminView', 'UpdateAdminView', 'DeleteAdminView', 'DetailAdminView', 'FormAdminView',
-    'Dashboard', 'BaseWidget', AutocompleteView,
+    'Dashboard', 'BaseWidget', 'AutocompleteView', 'InMapView',
     'IndexView', 'LoginView', 'LogoutView',
     'filter_hook', 'csrf_protect_m'
 )
@@ -37,6 +39,8 @@ def register_builtin_views(site):
         r'^(.+)/detail/$', DetailAdminView, name='%s_%s_detail')
     site.register_modelview(
         r'^autocomplete/(?P<field>.+)/$', AutocompleteView, name='%s_%s_autocomplete')
+    site.register_modelview(
+        r'^inmap/(?P<field>.+)/$', InMapView, name='%s_%s_inmap')
     site.register_modelview(
         r'^(.+)/dashboard/$', ModelDashboard, name='%s_%s_dashboard')
 

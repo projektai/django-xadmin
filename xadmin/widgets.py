@@ -231,6 +231,7 @@ class AdminOpenStreetMapWidget(forms.TextInput):
             final_attrs['zoom'] = settings.OSM_COORDINATES_ZOOM
         if hasattr(settings, 'OSM_COORDINATES_CENTER'):
             final_attrs['center'] = settings.OSM_COORDINATES_CENTER
+        final_attrs['style'] = 'display:none;';
 
         if attrs is not None:
             final_attrs.update(attrs)

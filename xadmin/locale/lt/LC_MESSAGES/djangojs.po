@@ -78,6 +78,10 @@ msgstr "Atšaukti"
 msgid "Choose"
 msgstr "Pasirinkti"
 
+#: static/xadmin/js/xadmin.widget.opnestreetmap.js:115
+msgid "Enlarge"
+msgstr "Padidinti"
+
 #: static/xadmin/js/xadmin.plugin.details.js:24
 #: static/xadmin/js/xadmin.plugin.quick-form.js:172
 msgid "Close"

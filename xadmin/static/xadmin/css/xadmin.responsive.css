@@ -57,11 +57,24 @@
   .detail-modal .modal-dialog {
     width: 80%;
   }
+  .map-modal .modal-dialog {
+    width: 95%;
+  }
+  .map-modal input {
+    width: 500px;
+  }
+  .map-handler {
+    float:right;
+    z-index:1010;
+    position:relative;
+    margin-top: -45px;
+    margin-right: 10px;
+  }
 }
 
 @media (max-width: 767px) {
 #body-content {
-  margin-top: 50px; 
+  margin-top: 50px;
   padding-top: 10px;
 }
 #body-content.show_menu{

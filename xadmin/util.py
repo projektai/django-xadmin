@@ -474,9 +474,41 @@ def image_field(image, field, **kwargs):
     return smart_text(image)
 
 
-def display_for_field(value, field , **kwargs):
+def coordinates_field(value, field, model_admin):
+    if value:
+        import re
+        match = re.search(r"\((.*)\)", str(value))
+        lonlat = match.group(1).split( );
+        if model_admin:
+            inputs_str = ''
+            if field.show_in_map:
+                for item in field.show_in_map:
+                    try:
+                        inputs_str += '<input type="hidden" class="show_in_map" url="/%(app)s/%(model)s/inmap/%(field)s/" icon="%(icon)s" zoom="%(zoom)s" />' % item
+                    except:
+                        #TODO: raise error
+                        pass
+
+            format_str = """
+            <span id="id_%s" class="openstreetmap_view" style="width:100%%;height:350px;" point="%s" center="%s" zoom="%s">%s:%s%s</span>"""
+            options = (
+                field.name,
+                value,
+                settings.OSM_COORDINATES_CENTER if hasattr(settings, 'OSM_COORDINATES_CENTER') else '',
+                str(settings.OSM_COORDINATES_ZOOM) if hasattr(settings, 'OSM_COORDINATES_ZOOM') else '',
+                lonlat[1],
+                lonlat[0],
+                inputs_str
+            )
+            return mark_safe(format_str % (options))
+        else:
+            return "%s:%s" % (lonlat[1], lonlat[0])
+    return ''
+
+
+def display_for_field(value, field , model_admin=None, **kwargs):
     from xadmin.views.list import EMPTY_CHANGELIST_VALUE
-    from xadmin.fields import ColorField, ImageWithThumbField
+    from xadmin.fields import ColorField, ImageWithThumbField, CoordinatesField
 
     if field.flatchoices:
         return dict(field.flatchoices).get(value, EMPTY_CHANGELIST_VALUE)
@@ -498,6 +530,8 @@ def display_for_field(value, field , **kwargs):
         return ', '.join([smart_text(obj) for obj in value.all()])
     elif isinstance(field, ColorField):
         return collor_field(value)
+    elif isinstance(field, CoordinatesField):
+        return coordinates_field(value, field, model_admin)
     elif isinstance(field, ImageWithThumbField):
         return image_field(value, field, **kwargs)
     else:

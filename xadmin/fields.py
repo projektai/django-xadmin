@@ -1,8 +1,12 @@
 from sorl.thumbnail import ImageField, get_thumbnail
+from django.contrib.gis.db import models as gis_models
 
 from django.core import exceptions
 from django.db import models
+#from django import forms
 from django.utils.translation import ugettext_lazy as _
+
+from xadmin.widgets import AdminOpenStreetMapWidget
 
 
 THUMB_DEFAULT_OPTIONS = {
@@ -45,27 +49,14 @@ class ColorField(models.CharField):
         super(ColorField, self).__init__(*args, **kwargs)
 
 
-class CoordinatesField(models.CharField):
-    def __init__(self, *args, **kwargs):
-        kwargs['max_length'] = 40
-        super(CoordinatesField, self).__init__(*args, **kwargs)
+class CoordinatesField(gis_models.PointField):
+    def __init__(self, verbose_name=None, name_for_map=None, show_in_map=None, **kwargs):
+        kwargs['geography'] = True
+        self.name_for_map = name_for_map
+        self.show_in_map = show_in_map
+        super(CoordinatesField, self).__init__(verbose_name, **kwargs)
 
-    def validate(self, value, model_instance):
-        super(CoordinatesField, self).validate(value, model_instance)
-
-        is_valid = False
-        tmp = value.split(':')
-        if len(tmp) == 2:
-            try:
-                lat = float(tmp[0])
-                lon = float(tmp[1])
-                if abs(lon) <= 180 and abs(lat) <= 90:
-                    is_valid = True
-            except ValueError:
-                pass
-
-        if not is_valid:
-            raise exceptions.ValidationError(
-                _('Incorrect coordinates'),
-                params={'value': value},
-            )
+    def formfield(self, **kwargs):
+        field = super(CoordinatesField, self).formfield(**kwargs)
+        field.widget = AdminOpenStreetMapWidget() #forms.CharField
+        return field
