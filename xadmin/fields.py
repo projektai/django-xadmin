@@ -3,10 +3,7 @@ from django.contrib.gis.db import models as gis_models
 
 from django.core import exceptions
 from django.db import models
-#from django import forms
 from django.utils.translation import ugettext_lazy as _
-
-from xadmin.widgets import AdminOpenStreetMapWidget
 
 
 THUMB_DEFAULT_OPTIONS = {
@@ -57,6 +54,7 @@ class CoordinatesField(gis_models.PointField):
         super(CoordinatesField, self).__init__(verbose_name, **kwargs)
 
     def formfield(self, **kwargs):
+        from xadmin.widgets import AdminOpenStreetMapWidget
         field = super(CoordinatesField, self).formfield(**kwargs)
         field.widget = AdminOpenStreetMapWidget() #forms.CharField
         return field
