@@ -9,6 +9,7 @@ if v[:3] > '1.7':
     from django.db.models.fields.related import ForeignObjectRel
 else:
     from django.db.models.related import RelatedObject as ForeignObjectRel
+from django.contrib.auth import get_permission_codename
 from django.forms.forms import pretty_name
 from django.utils import formats
 from django.utils.html import escape
@@ -216,7 +217,7 @@ def get_deleted_objects(objs, opts, user, admin_site, using):
                                    opts.object_name.lower()),
                                 None, (quote(obj._get_pk_val()),))
             p = '%s.%s' % (opts.app_label,
-                           opts.get_delete_permission())
+                           get_permission_codename('delete', opts))
             if not user.has_perm(p):
                 perms_needed.add(opts.verbose_name)
             # Display a link to the admin page.
