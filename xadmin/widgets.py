@@ -162,6 +162,7 @@ class AdminFileWidget(forms.ClearableFileInput):
     def render(self, name, value, attrs=None):
         attrs["class"] = "filestyle"
         attrs["data-icon"] = "false"
+        attrs["data-buttonText"] = _('Choose file')
         return super(AdminFileWidget, self).render(name, value, attrs)
 
 

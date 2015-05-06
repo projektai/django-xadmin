@@ -1378,5 +1378,9 @@ msgstr "Pagrindinis valdymo pultas"
 msgid "Now"
 msgstr "Dabar"
 
+#: widgets.py:165
+msgid "Choose file"
+msgstr "Pasirinkite failą"
+
 #~ msgid "chart"
 #~ msgstr "grafikas"
