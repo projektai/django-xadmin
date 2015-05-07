@@ -611,7 +611,7 @@ class AutocompleteView(BaseAdminView):
             else:
                 key = ''
 
-            qargs = { '%s%s__startswith' % (field, key): query, }
+            qargs = { '%s%s__istartswith' % (field, key): query, }
             queryset = self.model._default_manager.filter( **qargs ).values(field) #.distinct()
             content = {'options': [v[field] for v in queryset[:self.MAX_HINTS]], }
         else:
