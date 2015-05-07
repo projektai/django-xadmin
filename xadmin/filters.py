@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from django import get_version
@@ -209,9 +210,29 @@ class ChoicesFieldListFilter(ListFieldFilter):
 
 
 @manager.register
-class CharFieldListFilter(FieldFilter):
+class TextFieldListFilter(FieldFilter):
+    template = 'xadmin/filters/text.html'
+    lookup_formats = {'in': '%s__in','search': '%s__icontains'}
+
+    @classmethod
+    def test(cls, field, request, params, model, admin_view, field_path):
+        return (isinstance(field, models.CharField) and field.max_length > 100) or isinstance(field, models.TextField)
+
+    def do_filte(self, queryset):
+        if 'django.contrib.postgres' in settings.INSTALLED_APPS:
+            param_keys = list(self.used_params.keys())
+            for key in param_keys:
+                k = key.rfind("__")
+                new_key = key[:k] + "__unaccent" + key[k:]
+                self.used_params[new_key] = self.used_params[key]
+                del(self.used_params[key])
+        return super(TextFieldListFilter, self).do_filte(queryset)
+
+
+@manager.register
+class CharFieldListFilter(TextFieldListFilter):
     template = 'xadmin/filters/char.html'
-    lookup_formats = {'startswith': '%s__startswith'}
+    lookup_formats = {'startswith': '%s__istartswith'}
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
@@ -234,16 +255,6 @@ class CharFieldListFilter(FieldFilter):
         context = super(CharFieldListFilter, self).get_context()
         context['search_url'] = self.search_url
         return context
-
-
-@manager.register
-class TextFieldListFilter(FieldFilter):
-    template = 'xadmin/filters/text.html'
-    lookup_formats = {'in': '%s__in','search': '%s__contains'}
-
-    @classmethod
-    def test(cls, field, request, params, model, admin_view, field_path):
-        return (isinstance(field, models.CharField) and field.max_length > 100) or isinstance(field, models.TextField)
 
 
 @manager.register
