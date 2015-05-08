@@ -216,7 +216,7 @@ class TextFieldListFilter(FieldFilter):
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
-        return isinstance(field, models.CharField)  or isinstance(field, models.TextField)
+        return isinstance(field, models.TextField)
 
     def do_filte(self, queryset):
         if 'django.contrib.postgres' in settings.INSTALLED_APPS:
@@ -236,7 +236,7 @@ class CharFieldListFilter(TextFieldListFilter):
 
     @classmethod
     def test(cls, field, request, params, model, admin_view, field_path):
-        return (isinstance(field, models.CharField) and field.max_length > 10)
+        return isinstance(field, models.CharField)
 
     def __init__(self, field, request, params, model, model_admin, field_path):
         super(CharFieldListFilter, self).__init__(
